@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude COWORK — Live Workshop | Tina Taylor</title>
+<title>Claude COWORK — สรุปสิ่งที่เรียนรู้ | Tina Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
   :root {
     --terra: #CC785C;
     --terra-light: #F5E6DF;
@@ -17,1445 +15,777 @@
     --dark: #2D2D2D;
     --cream: #F5F0E8;
     --white: #FFFFFF;
-    --gray: #888780;
-    --gray-light: #F1EFE8;
-    --border: rgba(26,26,26,0.12);
+    --green: #1D9E75;
+    --red: #E24B4A;
+    --border: rgba(26,26,26,0.1);
   }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Sarabun', sans-serif; background: var(--cream); color: var(--black); line-height: 1.7; }
 
-  body {
-    font-family: 'Sarabun', sans-serif;
-    background: #0F0F0F;
-    color: var(--white);
-    overflow: hidden;
-  }
+  .sticky-nav { position: sticky; top: 0; z-index: 100; display: flex; overflow-x: auto; background: var(--black); -webkit-overflow-scrolling: touch; scrollbar-width: none; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-tab { flex-shrink: 0; padding: 14px 18px; font-size: 13px; font-family: 'Sarabun', sans-serif; color: rgba(255,255,255,0.45); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; text-decoration: none; display: block; transition: all 0.2s; }
+  .nav-tab:hover { color: rgba(255,255,255,0.8); }
+  .nav-tab.active { color: var(--terra); border-bottom-color: var(--terra); }
 
-  .slide-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  .hero { background: var(--black); color: white; padding: 48px 24px 40px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(204,120,92,0.1); }
+  .hero::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 150px; height: 150px; border-radius: 50%; background: rgba(204,120,92,0.07); }
+  .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terra); margin-bottom: 16px; }
+  .hero h1 { font-family: 'Kanit', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .hero h1 span { color: var(--terra); }
+  .hero p { font-size: 15px; opacity: 0.6; margin-top: 12px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(204,120,92,0.15); border: 1px solid rgba(204,120,92,0.3); border-radius: 20px; padding: 6px 16px; margin-top: 20px; font-size: 13px; color: var(--terra); }
 
-  .slide {
-    width: 100%;
-    height: 100vh;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px;
-    position: relative;
-    overflow: hidden;
-  }
+  .video-banner { background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%); border: 1px solid rgba(204,120,92,0.3); border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .video-play { width: 44px; height: 44px; background: var(--terra); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .video-play svg { margin-left: 3px; }
+  .video-text div:first-child { font-size: 11px; color: var(--terra); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .video-text div:last-child { font-family: 'Kanit', sans-serif; font-size: 15px; font-weight: 600; color: white; }
 
-  .slide.active { display: flex; }
+  .section-wrap { max-width: 600px; margin: 0 auto; padding: 28px 20px; }
 
-  /* Slide backgrounds */
-  .bg-dark { background: var(--black); }
-  .bg-cream { background: var(--cream); color: var(--black); }
-  .bg-terra { background: var(--terra); color: var(--white); }
-  .bg-white { background: var(--white); color: var(--black); }
+  .section-divider { background: var(--black); color: white; padding: 18px 20px; }
+  .section-divider-inner { max-width: 600px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .sdiv-icon { font-size: 20px; width: 40px; height: 40px; background: rgba(204,120,92,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-divider h2 { font-family: 'Kanit', sans-serif; font-size: 20px; font-weight: 700; }
+  .section-divider h2 span { color: var(--terra); }
+  .section-divider p { font-size: 13px; opacity: 0.5; margin-top: 2px; }
 
-  /* Typography */
-  .label {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--terra);
-    margin-bottom: 16px;
-  }
-  .bg-terra .label { color: rgba(255,255,255,0.7); }
+  .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 0.5px solid var(--border); }
+  .card-title { font-family: 'Kanit', sans-serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; color: var(--terra); }
+  .card p { font-size: 15px; line-height: 1.7; color: var(--dark); }
 
-  h1 { font-size: 56px; font-weight: 700; line-height: 1.15; font-family: 'Kanit', sans-serif; }
-  h2 { font-size: 42px; font-weight: 700; line-height: 1.2; font-family: 'Kanit', sans-serif; }
-  h3 { font-size: 28px; font-weight: 600; line-height: 1.3; font-family: 'Kanit', sans-serif; }
-  p { font-size: 20px; font-weight: 400; line-height: 1.7; }
-  .sub { font-size: 22px; color: rgba(255,255,255,0.65); margin-top: 12px; }
-  .bg-cream .sub, .bg-white .sub { color: var(--gray); }
+  .highlight { background: var(--terra-light); border-left: 3px solid var(--terra); border-radius: 0 12px 12px 0; padding: 16px 20px; margin-bottom: 16px; font-size: 15px; line-height: 1.7; }
+  .highlight strong { color: var(--terra-dark); }
 
-  /* Cards */
-  .card {
-    background: rgba(255,255,255,0.06);
-    border: 0.5px solid rgba(255,255,255,0.15);
-    border-radius: 16px;
-    padding: 28px 32px;
-  }
-  .bg-cream .card, .bg-white .card {
-    background: var(--white);
-    border-color: var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  }
+  .pain-card { background: white; border-radius: 16px; padding: 18px 20px; margin-bottom: 12px; border: 0.5px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; gap: 14px; align-items: flex-start; }
+  .pain-pct { font-family: 'Kanit', sans-serif; font-size: 22px; font-weight: 700; color: var(--terra); flex-shrink: 0; min-width: 50px; line-height: 1; padding-top: 2px; }
+  .pain-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .pain-quotes { font-size: 13px; opacity: 0.55; line-height: 1.7; }
 
-  .card-grid {
-    display: grid;
-    gap: 16px;
-    width: 100%;
-    max-width: 900px;
-  }
-  .card-grid-2 { grid-template-columns: 1fr 1fr; }
-  .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .flow-wrap { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 0.5px solid var(--border); }
+  .flow-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; opacity: 0.45; }
+  .flow-label.new { color: var(--green); opacity: 1; }
+  .flow-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .flow-box { background: rgba(204,120,92,0.1); border: 1px solid rgba(204,120,92,0.3); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 500; text-align: center; line-height: 1.4; }
+  .flow-box.ai { background: rgba(204,120,92,0.25); border-color: var(--terra); color: var(--terra-dark); }
+  .flow-box.long { flex: 1; min-width: 130px; }
+  .flow-arrow { font-size: 14px; color: var(--terra); opacity: 0.7; }
+  .flow-note { font-size: 12px; opacity: 0.45; margin-top: 10px; font-style: italic; }
+  .flow-note.good { color: var(--green); opacity: 1; font-style: normal; font-weight: 600; font-size: 13px; }
 
-  /* Number badge */
-  .num {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid var(--terra);
-    color: var(--terra);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 600;
-    flex-shrink: 0;
-    margin-bottom: 12px;
-  }
+  .cost-table { background: white; border-radius: 16px; padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 0.5px solid var(--border); }
+  .cost-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 14px; }
+  .cost-total { display: flex; justify-content: space-between; padding-top: 14px; margin-top: 6px; border-top: 1.5px solid rgba(26,26,26,0.15); font-weight: 700; font-size: 15px; }
+  .cost-total span:last-child { font-family: 'Kanit', sans-serif; }
 
-  /* Terra accent line */
-  .accent-line {
-    width: 48px; height: 3px;
-    background: var(--terra);
-    border-radius: 2px;
-    margin-bottom: 24px;
-  }
+  .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .compare-box { background: white; border-radius: 14px; padding: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 0.5px solid var(--border); }
+  .compare-box.after { border-color: rgba(204,120,92,0.4); }
+  .compare-label { font-size: 11px; opacity: 0.45; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .compare-label.after { color: var(--terra); opacity: 1; font-weight: 600; }
+  .compare-num { font-family: 'Kanit', sans-serif; font-size: 20px; font-weight: 700; color: rgba(26,26,26,0.35); }
+  .compare-num.after { color: var(--terra); font-size: 26px; }
+  .compare-sub { font-size: 12px; opacity: 0.4; margin-top: 4px; }
 
-  /* Stats row */
-  .stat-row {
-    display: flex;
-    gap: 40px;
-    margin-top: 32px;
-  }
-  .stat-item { text-align: center; }
-  .stat-num {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--terra);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 6px;
-  }
+  .savings-pill { background: rgba(204,120,92,0.12); border: 1px solid rgba(204,120,92,0.3); border-radius: 12px; padding: 14px 20px; margin-bottom: 16px; text-align: center; }
+  .savings-pill div:first-child { font-size: 13px; opacity: 0.6; margin-bottom: 4px; }
+  .savings-pill div:last-child { font-family: 'Kanit', sans-serif; font-size: 20px; font-weight: 700; color: var(--terra); }
 
-  /* Flow diagram */
-  .flow-row {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    width: 100%;
-    max-width: 900px;
-  }
-  .flow-box {
-    flex: 1;
-    text-align: center;
-    padding: 20px 16px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.4;
-  }
-  .flow-arrow {
-    font-size: 20px;
-    color: var(--terra);
-    flex-shrink: 0;
-    padding: 0 4px;
-  }
-  .flow-you { background: rgba(204,120,92,0.15); border: 1px solid rgba(204,120,92,0.4); }
-  .flow-ai { background: rgba(204,120,92,0.35); border: 1px solid var(--terra); }
-  .flow-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.6;
-    margin-bottom: 6px;
-  }
+  .machine-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 0.5px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .machine-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .machine-icon { font-size: 22px; width: 44px; height: 44px; background: var(--terra-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .machine-name { font-family: 'Kanit', sans-serif; font-size: 18px; font-weight: 700; color: var(--terra); }
+  .machine-sub { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terra); opacity: 0.7; margin-bottom: 2px; }
+  .machine-desc { font-size: 13px; opacity: 0.55; }
+  .machine-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag { background: var(--terra-light); color: var(--terra-dark); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
+  .demo-note { background: var(--cream); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--dark); display: flex; align-items: flex-start; gap: 8px; }
+  .demo-note a { color: var(--terra); font-weight: 600; text-decoration: none; }
 
-  /* Check / X lists */
-  .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .check-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 18px;
-    line-height: 1.5;
-  }
-  .check-icon {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 13px;
-    font-weight: 700;
-    margin-top: 2px;
-  }
-  .check-green { background: rgba(29,158,117,0.2); color: #1D9E75; }
-  .check-red { background: rgba(226,75,74,0.2); color: #E24B4A; }
+  .prompt-box { background: var(--black); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+  .prompt-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terra); margin-bottom: 12px; }
+  .prompt-text { font-family: 'Sarabun', sans-serif; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.8; white-space: pre-wrap; }
+  .copy-btn { display: flex; align-items: center; gap: 6px; margin-top: 14px; background: rgba(204,120,92,0.15); border: 1px solid rgba(204,120,92,0.3); border-radius: 8px; padding: 8px 14px; color: var(--terra); font-size: 13px; font-family: 'Sarabun', sans-serif; cursor: pointer; width: fit-content; transition: background 0.2s; }
+  .copy-btn:hover { background: rgba(204,120,92,0.25); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); background: rgba(29,158,117,0.1); }
 
-  /* Value stack table */
-  .stack-table { width: 100%; border-collapse: collapse; }
-  .stack-table tr { border-bottom: 0.5px solid var(--border); }
-  .stack-table td { padding: 14px 0; font-size: 17px; }
-  .stack-table td:last-child { text-align: right; font-weight: 600; color: var(--terra); }
-  .stack-total td { font-size: 20px; font-weight: 700; border-bottom: none; padding-top: 20px; }
+  .check-list { list-style: none; }
+  .check-list li { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; font-size: 15px; line-height: 1.6; }
+  .check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .g { background: rgba(29,158,117,0.15); color: var(--green); }
+  .r { background: rgba(226,75,74,0.15); color: var(--red); }
 
-  /* Price display */
-  .price-old {
-    font-size: 32px;
-    text-decoration: line-through;
-    font-weight: 400;
-  }
-  .price-new {
-    font-size: 72px;
-    font-weight: 700;
-    color: var(--terra);
-    line-height: 1;
-  }
-  .price-unit { font-size: 20px; color: var(--gray); margin-top: 8px; }
+  .offer-price { text-align: center; padding: 28px 20px; background: white; border-radius: 20px; border: 2px solid var(--terra); margin-bottom: 16px; box-shadow: 0 4px 20px rgba(204,120,92,0.15); }
+  .offer-original { font-size: 20px; text-decoration: line-through; opacity: 0.35; font-family: 'Kanit', sans-serif; }
+  .offer-price-num { font-family: 'Kanit', sans-serif; font-size: 52px; font-weight: 700; color: var(--terra); line-height: 1; margin: 8px 0; }
+  .offer-sub { font-size: 13px; opacity: 0.5; }
+  .offer-cta { display: block; background: var(--terra); color: white; text-align: center; padding: 16px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 18px; font-weight: 600; text-decoration: none; margin-bottom: 12px; }
+  .guarantee { text-align: center; font-size: 13px; opacity: 0.6; padding: 12px; }
 
-  /* Timer demo box */
-  .demo-header {
-    background: rgba(204,120,92,0.12);
-    border: 1px solid rgba(204,120,92,0.3);
-    border-radius: 12px;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 24px;
-  }
-  .demo-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--terra);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  .num-list { list-style: none; }
+  .num-list li { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+  .num-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--terra); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .num-list li div { font-size: 15px; line-height: 1.7; }
+  .num-list li strong { display: block; font-weight: 600; margin-bottom: 2px; }
 
-  /* Navigation */
-  .nav {
-    position: fixed;
-    bottom: 32px;
-    right: 40px;
-    display: flex;
-    gap: 12px;
-    z-index: 100;
-  }
-  .nav button {
-    background: rgba(255,255,255,0.1);
-    border: 0.5px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: 'Sarabun', sans-serif;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .nav button:hover { background: rgba(255,255,255,0.18); }
-  .nav button.primary {
-    background: var(--terra);
-    border-color: var(--terra);
-  }
-  .nav button.primary:hover { background: var(--terra-dark); }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-  .slide-counter {
-    position: fixed;
-    bottom: 38px;
-    left: 40px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.35);
-    font-family: 'Sarabun', sans-serif;
-    z-index: 100;
-  }
-
-  /* Logo mark */
-  .logo-mark {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: rgba(255,255,255,0.4);
-    position: absolute;
-    top: 32px;
-    right: 40px;
-  }
-  .bg-cream .logo-mark, .bg-white .logo-mark { color: rgba(26,26,26,0.3); }
-
-  /* Host photo placeholder */
-  .host-avatar {
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--terra-light), var(--terra));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 40px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 24px;
-    border: 3px solid var(--terra);
-  }
-
-  /* Comparison table */
-  .compare-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    width: 100%;
-    max-width: 900px;
-  }
-  .compare-before {
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    padding: 28px;
-  }
-  .compare-after {
-    background: rgba(204,120,92,0.15);
-    border: 1.5px solid var(--terra);
-    border-radius: 16px;
-    padding: 28px;
-  }
-  .compare-title {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    opacity: 0.6;
-  }
-  .compare-after .compare-title { color: var(--terra); opacity: 1; }
-  .compare-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 14px;
-    font-size: 16px;
-    line-height: 1.5;
-  }
-
-  /* Module cards */
-  .module-card {
-    background: rgba(255,255,255,0.05);
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
-    padding: 24px;
-  }
-  .module-num {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--terra);
-    margin-bottom: 8px;
-  }
-  .module-title { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
-  .module-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .tag {
-    background: rgba(204,120,92,0.15);
-    border: 0.5px solid rgba(204,120,92,0.3);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 13px;
-    color: var(--terra);
-  }
-
-  .wide { max-width: 1000px; }
-  .center { text-align: center; }
-  .content { width: 100%; max-width: 900px; }
+  .footer { background: var(--black); color: rgba(255,255,255,0.4); text-align: center; padding: 28px 20px; font-size: 13px; }
+  .footer strong { color: var(--terra); }
 </style>
 </head>
 <body>
 
-<!-- SLIDE 1: Title -->
-<div class="slide bg-dark active">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="text-align: center; max-width: 800px;">
-    <div class="label">Claude COWORK — Live Workshop</div>
-    <h1 style="font-size: 52px; line-height: 1.2;">วิธีใช้ Claude<br>ทำงานแทนทีมการตลาด<br><span style="color: var(--terra);">ทั้งทีมใน 60 นาที</span></h1>
-    <p class="sub" style="margin-top: 20px;">สำหรับเจ้าของธุรกิจที่มีทีมงาน<br>และอยากลดต้นทุนโดยไม่ต้องจ้างคนเพิ่ม</p>
-    <div style="margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 12px;">
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--terra); animation: pulse 1.5s ease-in-out infinite;"></div>
-      <span style="font-size: 15px; color: rgba(255,255,255,0.5);">อังคารที่ 28 เมษายน 2568 · 20:00 น.</span>
+<div class="hero">
+  <div class="hero-label">Tina Taylor · Claude COWORK</div>
+  <h1>สรุปสิ่งที่<span> เรียนรู้</span><br>จาก Live Session</h1>
+  <p>ทุกอย่างที่คุณเห็นในคืนนี้ — รวบไว้ที่นี่แล้ว</p>
+  <div class="hero-badge">🗓 28 เมษายน 2568</div>
+</div>
+
+<nav class="sticky-nav" id="mainNav">
+  <a class="nav-tab active" href="#highlights">🔑 Key Points</a>
+  <a class="nav-tab" href="#machines">⚙️ 3 Demos</a>
+  <a class="nav-tab" href="#prompts">💬 Prompts</a>
+  <a class="nav-tab" href="#fit">✓ เหมาะกับใคร</a>
+  <a class="nav-tab" href="#offer">🚀 Bootcamp</a>
+</nav>
+
+<div style="max-width: 600px; margin: 24px auto; padding: 0 20px;">
+  <a href="https://vimeo.com/1187371588?share=copy&fl=sv&fe=ci" target="_blank" class="video-banner">
+    <div class="video-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+    <div class="video-text">
+      <div>ดูวิดีโอย้อนหลัง</div>
+      <div>Claude COWORK Live Session · 28 เม.ย. 68</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+</div>
+
+<!-- KEY HIGHLIGHTS -->
+<div id="highlights">
+  <div class="section-divider">
+    <div class="section-divider-inner">
+      <div class="sdiv-icon">🔑</div>
+      <div><h2>Key <span>Highlights</span></h2><p>สิ่งสำคัญที่ต้องจำจาก session นี้</p></div>
     </div>
   </div>
-</div>
+  <div class="section-wrap">
 
-<!-- SLIDE 2: The big claim -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="text-align: center; max-width: 820px;">
-    <h2 style="font-size: 48px; line-height: 1.25;">เราจะดูกันสดๆ ว่า<br>Claude <span style="color: var(--terra);">ทำงานแทนทีมได้จริง</span><br>หรือเปล่า — ภายใน 60 นาที</h2>
-    <p class="sub" style="margin-top: 24px;">ไม่ใช่ทฤษฎี ไม่ใช่สไลด์สวยๆ<br>เป็น demo จริง ทำให้ดูสดๆ ต่อหน้าต่อตา</p>
-  </div>
-</div>
+    <!-- Host intro -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">ติน่า เทย์เลอร์ คือใคร?</div>
 
-<!-- SLIDE 3: Agenda -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">สิ่งที่คุณจะได้เห็นคืนนี้</div>
-    <h2 style="margin-bottom: 32px;">ตารางเวลา 60 นาที</h2>
-    <div class="card-grid" style="max-width: 860px;">
-      <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
-        <div class="num">1</div>
-        <div>
-          <div style="font-weight: 600; font-size: 18px; margin-bottom: 6px;">ปัญหาจริงของเจ้าของธุรกิจ</div>
-          <div style="font-size: 15px; opacity: 0.6;">ต้นทุนทีมการตลาดสูงแค่ไหน — และมีทางออกไหม</div>
-        </div>
-      </div>
-      <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
-        <div class="num">2</div>
-        <div>
-          <div style="font-weight: 600; font-size: 18px; margin-bottom: 6px;">วิธีคิดใหม่ — Claude ไม่ใช่แค่ chatbot</div>
-          <div style="font-size: 15px; opacity: 0.6;">ทำไม Claude Cowork ถึงต่างจากการใช้ AI ทั่วไป</div>
-        </div>
-      </div>
-      <div class="card" style="display: flex; gap: 20px; align-items: flex-start; border-color: rgba(204,120,92,0.4);">
-        <div class="num" style="border-color: var(--terra); color: var(--terra);">3</div>
-        <div>
-          <div style="font-weight: 600; font-size: 18px; margin-bottom: 6px; color: var(--terra);">Live Demo × 3 — ดูสดๆ ไม่กั๊ก</div>
-          <div style="font-size: 15px; opacity: 0.6;">โพสต์ · Line OA · Video Script</div>
-        </div>
-      </div>
-      <div class="card" style="display: flex; gap: 20px; align-items: flex-start;">
-        <div class="num">4</div>
-        <div>
-          <div style="font-weight: 600; font-size: 18px; margin-bottom: 6px;">ขั้นตอนต่อไปของคุณ</div>
-          <div style="font-size: 15px; opacity: 0.6;">จะเริ่มจากจุดไหนให้ได้ผลเร็วที่สุด</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 4: Host intro -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="display: flex; align-items: center; gap: 48px; max-width: 980px; width: 100%;">
-    <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center;">
-      <div style="width: 160px; height: 160px; border-radius: 16px; overflow: hidden; border: 3px solid var(--terra); flex-shrink: 0;">
-        <img src="https://static.wixstatic.com/media/cb13bf_803be8cec30844068100b444d6f0ef0b~mv2.jpg" style="width: 100%; height: 100%; object-fit: cover;" />
-      </div>
-      <div style="font-size: 22px; font-weight: 700;">Tina Taylor</div>
-      <div style="font-size: 15px; color: var(--terra); margin-top: 6px;">Online Business & AI Educator</div>
-      <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px;">
-        <div style="font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Social Media</div>
-        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-          <div style="text-align: center;">
-            <div style="font-size: 15px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">691K</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 15px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">686K</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 15px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">144.6K</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 15px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">46.6K</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="flex: 1;">
-      <div class="label">YOUR HOST</div>
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-        <div class="card" style="display: flex; gap: 16px; align-items: center; padding: 14px 20px;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0;"></div>
-          <div style="font-size: 16px;">ทำธุรกิจออนไลน์มากกว่า <strong style="color: var(--terra);">10 ปี</strong></div>
-        </div>
-        <div class="card" style="display: flex; gap: 16px; align-items: center; padding: 14px 20px;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0;"></div>
-          <div style="font-size: 16px;">ช่วยนักเรียนกว่า <strong style="color: var(--terra);">1,000+ คน</strong> ด้าน Digital Marketing</div>
-        </div>
-        <div class="card" style="display: flex; gap: 16px; align-items: center; padding: 14px 20px;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0;"></div>
-          <div style="font-size: 16px;">ยอดขายของนักเรียนรวมกันเกิน <strong style="color: var(--terra);">100 ล้านบาท</strong></div>
-        </div>
-        <div class="card" style="display: flex; gap: 16px; align-items: center; padding: 14px 20px;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0;"></div>
-          <div style="font-size: 16px;">สร้างรายได้ออนไลน์ส่วนตัวเกิน <strong style="color: var(--terra);">60 ล้านบาท</strong></div>
-        </div>
-        <div class="card" style="display: flex; gap: 16px; align-items: center; padding: 14px 20px;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0;"></div>
-          <div style="font-size: 16px;">จบการศึกษาจาก <strong style="color: var(--terra);">Waldorf University</strong> สหรัฐอเมริกา · Mass Communications</div>
-        </div>
-      </div>
-      <div style="margin-top: 20px;">
-        <div style="font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">แบรนด์ที่เคยทำงานด้วย</div>
-        <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-          <img src="https://www.charnveeresortkhaoyai.com/wp-content/uploads/2025/11/logo-w.svg" style="height: 36px; object-fit: contain; opacity: 0.8; filter: brightness(10);" />
-          <img src="https://scontent-msp1-1.xx.fbcdn.net/v/t39.30808-6/490977439_2312261869157932_4256617868902036709_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=53a332&_nc_ohc=Eo3YyRVav2cQ7kNvwEqtOGQ&_nc_oc=AdoIaH0A8LzgBTG6ZMbEgHn76mk6MYh5XdgZStwWJaRnDRzikHOALc4lsw77VH2sLw7EksORxneLQ8CYdCdcrDhv&_nc_zt=23&_nc_ht=scontent-msp1-1.xx&_nc_gid=dAnIdkA72YWeAw6k_dp9WQ&_nc_ss=7b2a8&oh=00_Af3CifCyzJxL4_NipdRKE45b_7H7I0XDfQnvyrc9p5qIYQ&oe=69F669A0" style="height: 36px; width: 36px; object-fit: cover; border-radius: 8px; opacity: 0.8;" />
-          <img src="https://scontent-msp1-1.xx.fbcdn.net/v/t39.30808-6/327271263_1503761253824234_386354140327342227_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=q1pm9qzKa44Q7kNvwF9WVBb&_nc_oc=AdpLKKyhCb0izHedQ7uLeMVTdb-tRpqNirWPyWq87Bd7bns7OFeycymD8KgAIWG_r9OW0bCS0dJT6JkhVBRZoT1f&_nc_zt=23&_nc_ht=scontent-msp1-1.xx&_nc_gid=vZSWkPEkuQoMw6oOLMCw5A&_nc_ss=7b2a8&oh=00_Af2LuENMXJLGsyt-ILpJdxIsKSonNDpvUvr8ZOSQua-7Vw&oe=69F66261" style="height: 36px; width: 36px; object-fit: cover; border-radius: 8px; opacity: 0.8;" />
-          <img src="https://image.makewebeasy.net/makeweb/m_480x240/ntRT0Fd6d/HOME/Web_Logo_200x200_avvalue.webp?v=202405291424" style="height: 36px; object-fit: contain; opacity: 0.8; border-radius: 8px;" />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 5: The real problem -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">ปัญหาจริงๆ</div>
-    <h2 style="margin-bottom: 16px;">ทีมการตลาด<span style="color: var(--terra);"> แพงแค่ไหน</span>?</h2>
-    <p class="sub" style="margin-bottom: 40px;">นี่คือต้นทุนเฉลี่ยของทีมการตลาดที่ธุรกิจส่วนใหญ่จ่ายอยู่</p>
-    <div style="width: 100%; max-width: 680px; margin: 0 auto;">
-      <table style="width: 100%; border-collapse: collapse;">
-        <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.1);">
-          <td style="padding: 14px 0; font-size: 17px; opacity: 0.8;">นักการตลาด / Copywriter</td>
-          <td style="text-align: right; font-size: 17px; font-weight: 600;">30,000–50,000 ฿/เดือน</td>
-        </tr>
-        <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.1);">
-          <td style="padding: 14px 0; font-size: 17px; opacity: 0.8;">กราฟิกดีไซเนอร์</td>
-          <td style="text-align: right; font-size: 17px; font-weight: 600;">20,000–40,000 ฿/เดือน</td>
-        </tr>
-        <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.1);">
-          <td style="padding: 14px 0; font-size: 17px; opacity: 0.8;">Social Media Manager</td>
-          <td style="text-align: right; font-size: 17px; font-weight: 600;">20,000–35,000 ฿/เดือน</td>
-        </tr>
-        <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.1);">
-          <td style="padding: 14px 0; font-size: 17px; opacity: 0.8;">Agency ดูแล Social</td>
-          <td style="text-align: right; font-size: 17px; font-weight: 600;">30,000–80,000 ฿/เดือน</td>
-        </tr>
-        <tr>
-          <td style="padding: 20px 0 0; font-size: 20px; font-weight: 700;">รวมทั้งหมด</td>
-          <td style="text-align: right; font-size: 28px; font-weight: 700; color: var(--terra); padding-top: 20px;">100,000–200,000+ ฿</td>
-        </tr>
-      </table>
-      <div style="margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.4); text-align: right;">ต่อเดือน</div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 6: The question -->
-<div class="slide bg-terra">
-  <div style="text-align: center; max-width: 820px;">
-    <h2 style="font-size: 50px; line-height: 1.3;">ถ้า Claude ทำงานพวกนี้ได้<br><span style="opacity: 0.8; font-size: 38px; font-weight: 400;">คุณยังต้องจ่ายอยู่ไหม?</span></h2>
-  </div>
-</div>
-
-<!-- SLIDE 5A: Story - The Peak -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">เรื่องจริงของติน่า</div>
-    <h2 style="margin-bottom: 24px;">ช่วงที่ธุรกิจดีที่สุด<br><span style="color: var(--terra);">ก็คือช่วงที่จ่ายแพงที่สุด</span></h2>
-    <p style="font-size: 19px; line-height: 1.8; max-width: 700px; margin: 0 auto; opacity: 0.85;">ธุรกิจของติน่าไปได้ดีมาก ยอดขายดี ทีมเติบโต ทุกอย่างดูเหมือนกำลังไปในทิศทางที่ถูกต้อง</p>
-    <div style="margin-top: 40px; padding: 32px 48px; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 16px; display: inline-block;">
-      <div style="font-size: 15px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px;">ค่าใช้จ่ายฝ่ายการตลาด / เดือน</div>
-      <div style="font-size: 64px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">308,000 ฿</div>
-      <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; text-align: left;">
-        <div style="font-size: 15px; opacity: 0.6; display: flex; gap: 10px;"><span style="color: var(--terra);">·</span> นักการตลาด · Copywriter (นักเขียนโฆษณา)</div>
-        <div style="font-size: 15px; opacity: 0.6; display: flex; gap: 10px;"><span style="color: var(--terra);">·</span> Graphic Designer · Social Media Manager</div>
-        <div style="font-size: 15px; opacity: 0.6; display: flex; gap: 10px;"><span style="color: var(--terra);">·</span> Agency · Tools ต่างๆ</div>
-      </div>
-    </div>
-    <p style="margin-top: 32px; font-size: 18px; opacity: 0.6;">จ่ายแพงมาก — แต่ output ไม่ได้โตตามสัดส่วนเลย</p>
-  </div>
-</div>
-
-<!-- SLIDE 5B: Story - The Skeptic -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">เรื่องจริงของติน่า</div>
-    <h2 style="margin-bottom: 32px;">แล้วก็มีคนบอกให้<span style="color: var(--terra);"> ลอง AI</span></h2>
-    <div style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
-      <div class="card" style="display: flex; gap: 16px; align-items: flex-start; padding: 22px 28px;">
-        <span style="color: #E24B4A; font-size: 20px; flex-shrink: 0; margin-top: 2px;">✕</span>
-        <p style="font-size: 17px; line-height: 1.6; opacity: 0.85;">ลอง ChatGPT แล้วรู้สึกว่า — มันให้งานติน่าเพิ่มขึ้น ไม่ใช่ลดลง</p>
-      </div>
-      <div class="card" style="display: flex; gap: 16px; align-items: flex-start; padding: 22px 28px;">
-        <span style="color: #E24B4A; font-size: 20px; flex-shrink: 0; margin-top: 2px;">✕</span>
-        <p style="font-size: 17px; line-height: 1.6; opacity: 0.85;">มันตอบมาเป็น 10 ตัวเลือก — แต่ติน่าต้องการแค่ <strong style="color: white;">หนึ่ง</strong> ที่ใช้ได้เลย</p>
-      </div>
-      <div class="card" style="display: flex; gap: 16px; align-items: flex-start; padding: 22px 28px;">
-        <span style="color: #E24B4A; font-size: 20px; flex-shrink: 0; margin-top: 2px;">✕</span>
-        <p style="font-size: 17px; line-height: 1.6; opacity: 0.85;">ต้อง copy paste ทุกอย่างเอง · format เอง · อัพโหลดเอง · โพสต์เอง</p>
-      </div>
-      <div class="card" style="display: flex; gap: 16px; align-items: flex-start; padding: 22px 28px;">
-        <span style="color: #E24B4A; font-size: 20px; flex-shrink: 0; margin-top: 2px;">✕</span>
-        <p style="font-size: 17px; line-height: 1.6; opacity: 0.85;">ถ้า prompt ไม่ดี ผลลัพธ์ก็แย่ — ต้องไปเรียน "วิธี prompt" ก่อนถึงจะใช้ได้</p>
-      </div>
-    </div>
-    <p style="margin-top: 28px; font-size: 18px; opacity: 0.55;">สุดท้ายติน่าเป็นคนทำงานให้ AI — ไม่ใช่ AI ทำงานให้ติน่า</p>
-  </div>
-</div>
-
-<!-- SLIDE 5C: Story - The Wow Moment -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">เรื่องจริงของติน่า</div>
-    <h2 style="margin-bottom: 32px;">จนกระทั่งติน่าเจอ <span style="color: var(--terra);">Claude</span></h2>
-    <div class="card" style="max-width: 720px; margin: 0 auto; padding: 36px 40px; text-align: left;">
-      <p style="font-size: 18px; line-height: 1.9; opacity: 0.9;">ครั้งแรกที่ติน่าให้ Claude ช่วยคิด hook และ content ideas —</p>
-      <p style="font-size: 18px; line-height: 1.9; margin-top: 16px; opacity: 0.9;">มันไม่ได้พ่นคำตอบทุกอย่างออกมาทีเดียว</p>
-      <p style="font-size: 20px; line-height: 1.9; margin-top: 16px; font-weight: 600; color: var(--terra);">มัน <strong>ถามติน่ากลับ</strong></p>
-      <p style="font-size: 18px; line-height: 1.9; margin-top: 16px; opacity: 0.8;">ถามว่ากลุ่มเป้าหมายคือใคร · tone ที่ต้องการเป็นแบบไหน · มี context อะไรที่ควรรู้ไหม</p>
-      <p style="font-size: 18px; line-height: 1.9; margin-top: 16px; opacity: 0.9;">มันไม่ได้ assume ว่ามันรู้ทุกอย่าง — มันทำตัวเหมือน <strong style="color: white;">พาร์ทเนอร์</strong> ที่อยากเข้าใจงานก่อนลงมือทำ</p>
-      <div style="margin-top: 28px; padding-top: 24px; border-top: 0.5px solid rgba(255,255,255,0.1); font-size: 17px; font-style: italic; opacity: 0.7;">"นี่แหละคือสิ่งที่เราต้องการมาตลอด"</div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 5C2: Claude Cowork - App Integration -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">จุดเปลี่ยน</div>
-    <h2 style="margin-bottom: 16px;">แล้วติน่าเจอ <span style="color: var(--terra);">Claude Cowork</span></h2>
-    <p style="font-size: 18px; opacity: 0.65; margin-bottom: 32px; max-width: 680px;">Cowork ไม่ได้แค่คุยกับคุณใน chat — มันเชื่อมต่อกับ apps ที่คุณใช้อยู่แล้ว<br>และทำงานแทนคุณข้างนอก chat เลย</p>
-    <div class="card-grid card-grid-3" style="max-width: 860px;">
-      <div class="card" style="text-align: center; padding: 28px 20px;">
-        <div style="font-size: 28px; margin-bottom: 12px;">📋</div>
-        <div style="font-size: 18px; font-weight: 700; color: var(--terra); margin-bottom: 10px;">Notion</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">เก็บ content<br>review · approve<br>ได้ในที่เดียว</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 28px 20px;">
-        <div style="font-size: 28px; margin-bottom: 12px;">💬</div>
-        <div style="font-size: 18px; font-weight: 700; color: var(--terra); margin-bottom: 10px;">Line OA</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">draft และส่ง broadcast<br>ได้โดยไม่ต้อง<br>สลับ app</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 28px 20px;">
-        <div style="font-size: 28px; margin-bottom: 12px;">📁</div>
-        <div style="font-size: 18px; font-weight: 700; color: var(--terra); margin-bottom: 10px;">Google Drive</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">เก็บไฟล์ · รูป · วิดีโอ<br>และดึง link<br>มาใช้ได้ทันที</div>
-      </div>
-    </div>
-    <div style="margin-top: 28px; padding: 14px 32px; background: rgba(204,120,92,0.12); border: 1px solid rgba(204,120,92,0.3); border-radius: 12px; display: inline-block;">
-      <span style="font-size: 16px; color: var(--terra); font-weight: 600;">คุณไม่ต้อง copy paste อีกต่อไป — Claude Cowork จัดการทุก app ให้</span>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 5D: Story - The Result -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">เรื่องจริงของติน่า</div>
-    <h2 style="margin-bottom: 24px;">ผลลัพธ์ที่<span style="color: var(--terra);"> เกิดขึ้นจริง</span></h2>
-    <div style="display: flex; gap: 24px; justify-content: center; align-items: flex-start; flex-wrap: wrap; max-width: 1000px; margin: 0 auto;">
-      <div class="card" style="flex: 1; min-width: 280px; padding: 28px 32px;">
-        <div style="font-size: 13px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px;">Before — สิ่งที่จ่ายอยู่</div>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">ทำคอนเทนต์</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">28,000 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">เขียนโฆษณา</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">35,000 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">รีโพส/ดัดแปลงคอนเทนต์</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">เขียนสคริปต์วิดีโอ</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">วางแผนคอนเทนต์รายสัปดาห์</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">ทำแคมเปญเปิดตัว (Launch)</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">105,000 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">วิเคราะห์คู่แข่ง</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">วิเคราะห์แบบสอบถามลูกค้า</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">รายงานผลแคมเปญ</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">17,500 ฿</td>
-          </tr>
-          <tr>
-            <td style="padding: 9px 0; font-size: 14px; opacity: 0.75;">ออกแบบ/จัดโปร (Offer)</td>
-            <td style="text-align: right; font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: line-through; white-space: nowrap;">35,000 ฿</td>
-          </tr>
-        </table>
-        <div style="margin-top: 16px; padding-top: 16px; border-top: 0.5px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 14px; opacity: 0.5;">รวม</span>
-          <span style="font-size: 22px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">308,000 ฿/เดือน</span>
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; font-size: 32px; color: var(--terra); padding-top: 40px;">→</div>
-      <div class="card" style="flex: 0 0 auto; min-width: 220px; padding: 28px 32px; border-color: rgba(204,120,92,0.4); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
-        <div style="font-size: 13px; color: var(--terra); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Now</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Claude_AI_symbol.svg" width="40" height="40" style="display: block;" />
-        <div style="font-size: 48px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">72,000 ฿</div>
-        <div style="font-size: 14px; opacity: 0.6;">ต่อเดือน</div>
-        <div style="width: 100%; height: 0.5px; background: rgba(255,255,255,0.1);"></div>
-        <div style="font-size: 13px; opacity: 0.6; line-height: 1.6;">งานทุกอย่างข้างซ้าย<br>Claude ทำแทนได้ทั้งหมด</div>
-        <div style="width: 100%; height: 0.5px; background: rgba(255,255,255,0.1);"></div>
-        <div style="padding: 8px 0; background: rgba(204,120,92,0.12); border-radius: 8px; width: 100%; text-align: center;">
-          <div style="font-size: 12px; opacity: 0.7; margin-bottom: 4px;">ประหยัดได้</div>
-          <div style="font-size: 16px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1.3;">236,000 ฿/เดือน<br>เกือบ 3 ล้าน/ปี</div>
-        </div>
-      </div>
-    </div>
-    <p style="margin-top: 24px; font-size: 17px; opacity: 0.6;">และผลลัพธ์ไม่ได้ลดลงเลย — มันเพิ่มขึ้นด้วยซ้ำ</p>
-  </div>
-</div>
-
-<!-- SLIDE 7: Paradigm shift intro -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">วิธีคิดใหม่</div>
-    <h2 style="margin-bottom: 16px;">Claude ไม่ใช่แค่ <span style="color: var(--terra);">Chatbot</span></h2>
-    <p class="sub">มันเป็น operator ที่ทำงานแทนคุณ<br>ทั้งใน และนอก chat interface</p>
-  </div>
-</div>
-
-<!-- SLIDE 8: Survey Results -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">ผลสำรวจจากเจ้าของธุรกิจจริง</div>
-    <h2 style="margin-bottom: 32px;">3 ปัญหาใหญ่ที่สุดของเจ้าของธุรกิจ<br>ที่พยายามใช้ <span style="color: var(--terra);">AI กับการตลาด</span></h2>
-    <div style="display: flex; flex-direction: column; gap: 16px; max-width: 860px;">
-      <div class="card" style="display: flex; gap: 24px; align-items: flex-start; padding: 24px 28px;">
-        <div style="flex-shrink: 0; text-align: center; min-width: 64px;">
-          <div style="font-size: 28px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">~32%</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+        <div style="width:72px;height:72px;border-radius:12px;overflow:hidden;border:2px solid var(--terra);flex-shrink:0;">
+          <img src="https://static.wixstatic.com/media/cb13bf_803be8cec30844068100b444d6f0ef0b~mv2.jpg" style="width:100%;height:100%;object-fit:cover;" />
         </div>
         <div>
-          <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">1. เครื่องมือเยอะเกินไป — ไม่รู้จะเริ่มจากไหน</div>
-          <div style="font-size: 14px; opacity: 0.55; line-height: 1.7;">"มี tools ให้เลือกเยอะมาก ไม่รู้จะเริ่มตัวไหน" · "ตัวเลือกเยอะจนไม่กล้าลงมือทำ" · "ไม่มี blueprint ชัดเจนว่าต้องทำอะไรก่อน"</div>
+          <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;">Tina Taylor</div>
+          <div style="font-size:13px;color:var(--terra);">Online Business & AI Educator</div>
         </div>
       </div>
-      <div class="card" style="display: flex; gap: 24px; align-items: flex-start; padding: 24px 28px;">
-        <div style="flex-shrink: 0; text-align: center; min-width: 64px;">
-          <div style="font-size: 28px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">~21%</div>
-        </div>
-        <div>
-          <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">2. จ้างเพิ่มก็แพง ไม่จ้างก็งานล้น — ไม่รู้จะทำยังไง</div>
-          <div style="font-size: 14px; opacity: 0.55; line-height: 1.7;">"จ่ายเงินเดือนทีมไปเต็มๆ แต่ content ออกมาน้อยและช้า" · "อยากขยายการตลาด แต่จ้างคนเพิ่มก็ไม่ไหว" · "ต้นทุนสูงขึ้นทุกปี แต่ผลลัพธ์ไม่ได้โตตาม"</div>
-        </div>
-      </div>
-      <div class="card" style="display: flex; gap: 24px; align-items: flex-start; padding: 24px 28px;">
-        <div style="flex-shrink: 0; text-align: center; min-width: 64px;">
-          <div style="font-size: 28px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">~17%</div>
-        </div>
-        <div>
-          <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">3. ใช้ AI แล้ว แต่ยังทำงานเองอยู่ — AI ไม่ได้ช่วยลดงานจริงๆ</div>
-          <div style="font-size: 14px; opacity: 0.55; line-height: 1.7;">"ใช้ AI แล้วแต่ยังต้อง copy paste ทุกอย่างเอง" · "ทีมปรับตัวกับ tools ไม่ทัน" · "ไม่รู้วิธีทำงานร่วมกันกับ AI" · "AI ตอบแล้วแต่ยังต้องมานั่งแก้เองอีกครึ่งชั่วโมง"</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 9: Old way vs New way diagram -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="width: 100%; max-width: 960px; padding: 0 20px;">
-    <div class="label" style="margin-bottom: 8px;">PARADIGM SHIFT</div>
-    <h2 style="font-size: 32px; margin-bottom: 6px;">Claude ไม่ได้แค่ตอบคำถาม<span style="color: var(--terra);"> ใน Chat</span></h2>
-    <p style="font-size: 16px; opacity: 0.6; margin-bottom: 32px;">มันทำงานแทนคุณ<strong style="color: rgba(255,255,255,0.85);"> นอก</strong> chat ด้วย — งานที่ปกติต้องเปิดหลาย tab และ copy paste ไปมา</p>
-
-    <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-bottom: 12px;">วิธีเก่า — ใช้ AI ทั่วไป</div>
-    <div style="display: flex; align-items: center; gap: 0; margin-bottom: 32px;">
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
-        <div style="font-size: 18px; opacity: 0.5;">👤</div>
-        <div style="background: rgba(204,120,92,0.15); border: 1.5px solid rgba(204,120,92,0.5); border-radius: 10px; padding: 12px 16px; text-align: center; min-width: 80px;">
-          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terra); margin-bottom: 4px;">INPUT</div>
-          <div style="font-size: 13px; font-weight: 600;">คุณ</div>
-        </div>
-      </div>
-      <div style="font-size: 18px; color: var(--terra); padding: 0 6px; margin-top: 20px;">→</div>
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
-        <div style="font-size: 18px; opacity: 0.5;">✳️</div>
-        <div style="background: rgba(204,120,92,0.3); border: 1.5px solid var(--terra); border-radius: 10px; padding: 12px 16px; text-align: center; min-width: 80px;">
-          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); margin-bottom: 4px;">GENERATE</div>
-          <div style="font-size: 13px; font-weight: 600;">AI</div>
-        </div>
-      </div>
-      <div style="font-size: 18px; color: var(--terra); padding: 0 6px; margin-top: 20px;">→</div>
-      <div style="flex: 1; margin-top: 20px;">
-        <div style="border: 1.5px solid rgba(204,120,92,0.25); border-radius: 10px; padding: 14px 20px; position: relative;">
-          <div style="font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terra); margin-bottom: 6px; text-align: center;">ACTIONS (STEPS 3 – N)</div>
-          <div style="font-size: 14px; font-weight: 600; text-align: center; color: rgba(255,255,255,0.85);">คุณ — Copy, Paste, Format, แก้ไข, Upload, Schedule, โพสต์, วนซ้ำ...</div>
-          <div style="font-size: 12px; opacity: 0.45; text-align: center; margin-top: 4px;">นี่คือจุดที่เสียเวลามากที่สุด</div>
-          <div style="display: flex; gap: 4px; justify-content: center; margin-top: 10px;">
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.3);"></div>
-          </div>
-          <div style="position: absolute; top: -20px; right: 40px; font-size: 18px; opacity: 0.4;">👤</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--terra); margin-bottom: 12px;">วิธีใหม่ — Claude Cowork</div>
-    <div style="display: flex; align-items: center; gap: 0;">
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
-        <div style="font-size: 18px; opacity: 0.5;">👤</div>
-        <div style="background: rgba(204,120,92,0.15); border: 1.5px solid rgba(204,120,92,0.5); border-radius: 10px; padding: 12px 16px; text-align: center; min-width: 80px;">
-          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terra); margin-bottom: 4px;">INPUT</div>
-          <div style="font-size: 13px; font-weight: 600;">คุณ</div>
-          <div style="margin-top: 6px; background: rgba(204,120,92,0.25); border-radius: 6px; padding: 3px 8px; font-size: 10px; color: var(--terra);">AI</div>
-        </div>
-      </div>
-      <div style="font-size: 18px; color: var(--terra); padding: 0 6px; margin-top: 20px;">→</div>
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
-        <div style="font-size: 18px; opacity: 0.7;">✳️</div>
-        <div style="background: rgba(204,120,92,0.3); border: 1.5px solid var(--terra); border-radius: 10px; padding: 12px 16px; text-align: center; min-width: 80px;">
-          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); margin-bottom: 4px;">GENERATE</div>
-          <div style="font-size: 13px; font-weight: 600;">Claude</div>
-        </div>
-      </div>
-      <div style="font-size: 18px; color: var(--terra); padding: 0 6px; margin-top: 20px;">→</div>
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
-        <div style="font-size: 18px; opacity: 0.5;">👤</div>
-        <div style="background: rgba(204,120,92,0.15); border: 1.5px solid rgba(204,120,92,0.5); border-radius: 10px; padding: 12px 16px; text-align: center; min-width: 80px;">
-          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terra); margin-bottom: 4px;">REVIEW</div>
-          <div style="font-size: 13px; font-weight: 600;">คุณ</div>
-        </div>
-      </div>
-      <div style="font-size: 18px; color: var(--terra); padding: 0 6px; margin-top: 20px;">→</div>
-      <div style="flex: 1; margin-top: 20px;">
-        <div style="border: 1.5px solid rgba(204,120,92,0.5); border-radius: 10px; padding: 14px 20px; background: rgba(204,120,92,0.07); position: relative;">
-          <div style="font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terra); margin-bottom: 6px; text-align: center;">ACTIONS (STEPS 4 – N)</div>
-          <div style="font-size: 14px; font-weight: 600; text-align: center; color: var(--terra);">Claude — Execute, Format, Upload, Schedule, โพสต์, วนซ้ำ...</div>
-          <div style="font-size: 12px; opacity: 0.5; text-align: center; margin-top: 4px;">Claude จัดการทั้งหมด</div>
-          <div style="display: flex; gap: 4px; justify-content: center; margin-top: 10px;">
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-            <div style="width: 5px; height: 5px; border-radius: 50%; background: rgba(204,120,92,0.5);"></div>
-          </div>
-          <div style="position: absolute; top: -20px; right: 40px; font-size: 18px; opacity: 0.8;">✳️</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 9B: Exponential Returns -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="width: 100%; max-width: 900px;">
-    <div class="label" style="text-align: center; margin-bottom: 8px;">จะเริ่มจากไหน และป้องกันความoverwhelm</div>
-    <h2 style="text-align: center; margin-bottom: 8px;"><span style="color: var(--terra);">โฟกัสจุดที่ให้ผลตอบแทนมากที่สุดก่อน</span></h2>
-    <p style="text-align: center; font-size: 16px; opacity: 0.6; margin-bottom: 24px;">เริ่มจากจุดที่ลงทุนน้อย แต่ได้ผลลัพธ์ที่โตแบบทบต้นกลับมา</p>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
-      <div style="border: 1.5px solid rgba(226,75,74,0.3); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px;">
-        <span style="color: #E24B4A; font-size: 18px; flex-shrink: 0;">✕</span>
-        <div>
-          <div style="color: #E24B4A; font-weight: 600; font-size: 15px;">อย่า prioritize สิ่งที่ประหยัดเวลามากที่สุด</div>
-          <div style="font-size: 13px; opacity: 0.5; margin-top: 2px;">(common mistake)</div>
-        </div>
-      </div>
-      <div style="border: 1.5px solid rgba(29,158,117,0.4); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px;">
-        <span style="color: #1D9E75; font-size: 18px; flex-shrink: 0;">✓</span>
-        <div>
-          <div style="color: #1D9E75; font-weight: 600; font-size: 15px;">Prioritize สิ่งที่ให้ผลตอบแทน<span style="text-decoration: underline;">มากที่สุดในเวลาน้อยที่สุด</span></div>
-          <div style="font-size: 13px; opacity: 0.5; margin-top: 2px;">(smart move)</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="position: relative; height: 200px; border-left: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15); padding: 0 0 20px 0;">
-      <svg width="100%" height="100%" viewBox="0 0 860 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1D9E75" stop-opacity="0.25"/>
-            <stop offset="100%" stop-color="#1D9E75" stop-opacity="0.02"/>
-          </linearGradient>
-        </defs>
-        <path d="M0,195 Q200,190 400,160 Q600,110 860,5 L860,200 L0,200 Z" fill="url(#fillGrad)"/>
-        <path d="M0,195 Q200,190 400,160 Q600,110 860,5" stroke="#1D9E75" stroke-width="2.5" fill="none"/>
-        <path d="M0,195 L860,188" stroke="rgba(226,75,74,0.5)" stroke-width="1.5" fill="none"/>
-      </svg>
-      <div style="position: absolute; bottom: -28px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 11px; opacity: 0.35; padding: 0 4px;">
-        <span>สัปดาห์ 1</span><span>สัปดาห์ 2</span><span>สัปดาห์ 3</span><span>สัปดาห์ 4</span>
-      </div>
-    </div>
-    <div style="display: flex; justify-content: center; gap: 32px; margin-top: 36px; font-size: 13px; opacity: 0.5;">
-      <span>— — Input / ที่ลงทุน</span>
-      <span style="color: #1D9E75;">—— Output / ผลลัพธ์ที่ได้กลับมา</span>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 10: 3 Areas -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">3 เครื่องจักรธุรกิจ</div>
-    <h2 style="margin-bottom: 40px;">เริ่มจาก<span style="color: var(--terra);"> 3 จุด</span>นี้ก่อน</h2>
-    <div class="card-grid card-grid-3" style="max-width: 900px;">
-      <div class="card" style="text-align: center; padding: 36px 24px;">
-        <div style="font-size: 32px; margin-bottom: 16px;">📣</div>
-        <div style="font-size: 20px; font-weight: 700; color: var(--terra); margin-bottom: 12px;">Content Machine</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">เพิ่ม Reach<br>เพิ่ม Leads<br>เพิ่มลูกค้าใหม่</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 36px 24px;">
-        <div style="font-size: 32px; margin-bottom: 16px;">🚀</div>
-        <div style="font-size: 20px; font-weight: 700; color: var(--terra); margin-bottom: 12px;">Launch Machine</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">เปิดตัว Offer ได้เร็วขึ้น<br>ทดสอบได้เร็วขึ้น<br>Funnel พร้อมใช้งาน</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 36px 24px;">
-        <div style="font-size: 32px; margin-bottom: 16px;">🔍</div>
-        <div style="font-size: 20px; font-weight: 700; color: var(--terra); margin-bottom: 12px;">Strategy Machine</div>
-        <div style="font-size: 14px; opacity: 0.65; line-height: 1.6;">วิเคราะห์คู่แข่ง<br>วิเคราะห์แบบสอบถามลูกค้า<br>ตัดสินใจได้เร็วขึ้น</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 11: Content Machine Intro -->
-<div class="slide bg-terra">
-  <div style="text-align: center; max-width: 800px;">
-    <div style="font-size: 13px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; margin-bottom: 20px;">จุดที่ 1</div>
-    <h1 style="font-size: 52px; font-weight: 700; line-height: 1.2;">วิธีสร้าง Content Machine<br>ที่ Scale ธุรกิจโดยการเพิ่มลูกค้า</h1>
-    <p style="font-size: 20px; margin-top: 24px; opacity: 0.85;">เป้าหมาย : หาลูกค้าได้อย่างมีกำไร คาดเดาได้ และสม่ำเสมอ</p>
-  </div>
-</div>
-
-<!-- SLIDE 12B: Demo 1 Intro -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="demo-header" style="margin: 0 auto 32px;">
-      <div class="demo-dot"></div>
-      <span style="font-size: 15px; font-weight: 600; color: var(--terra);">LIVE DEMO 1 / 3</span>
-      <span style="font-size: 15px; opacity: 0.6; margin-left: 4px;">· Content Machine</span>
-    </div>
-    <h2 style="margin-bottom: 16px;">โพสต์คอนเทนท์ลง Social Media</h2>
-    <p class="sub" style="margin-bottom: 40px;">Claude เขียน copy · สร้างภาพ · format caption<br>พร้อมโพสต์ได้เลย</p>
-    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 24px 32px; text-align: left;">
-      <div style="font-size: 15px; font-weight: 600; color: var(--terra); margin-bottom: 16px; letter-spacing: 0.08em; text-transform: uppercase;">Timer Challenge</div>
-      <p style="font-size: 17px; line-height: 1.6; opacity: 0.85;">"ถ้าส่งงานนี้ให้ทีม ใช้เวลากี่ชั่วโมง?<br>ติน่าให้ Claude ทำในเวลาเดียวกันนี้"</p>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 13: Demo 1 Cost anchor -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">หลัง Demo 1</div>
-    <h3 style="margin-bottom: 32px; font-size: 26px;">งานนี้ถ้าจ้างคนทำ ราคาเท่าไหร่?</h3>
-    <div class="card-grid card-grid-2" style="max-width: 700px; margin: 0 auto;">
-      <div class="card" style="text-align: center; padding: 32px;">
-        <div style="font-size: 14px; opacity: 0.5; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em;">จ้าง Freelancer</div>
-        <div style="font-size: 32px; font-weight: 700; color: rgba(255,255,255,0.8);">1,500–5,000 ฿</div>
-        <div style="font-size: 14px; opacity: 0.4; margin-top: 8px;">ต่อ 1 โพสต์ · 1–3 วัน</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 32px; border-color: rgba(204,120,92,0.4);">
-        <div style="font-size: 14px; color: var(--terra); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Claude Cowork</div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--terra);">~5 นาที</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 8px;">พร้อมโพสต์ · ไม่จำกัดจำนวน</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 14: Demo 2 Intro -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="demo-header" style="margin: 0 auto 32px;">
-      <div class="demo-dot"></div>
-      <span style="font-size: 15px; font-weight: 600; color: var(--terra);">LIVE DEMO 2 / 3</span>
-    </div>
-    <h2 style="margin-bottom: 16px;">Launch Machine</h2>
-    <p class="sub" style="margin-bottom: 40px;">Claude เขียน broadcast ขาย · ปรับ tone ให้เหมาะกลุ่มเป้าหมาย<br>draft เข้า platform รอ approve</p>
-    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 24px 32px; text-align: left;">
-      <div style="font-size: 15px; font-weight: 600; color: var(--terra); margin-bottom: 16px; letter-spacing: 0.08em; text-transform: uppercase;">สิ่งที่จะเห็น</div>
       <ul class="check-list">
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">Claude เขียน broadcast message ตาม brief สั้นๆ</span>
-        </li>
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">ปรับ hook · CTA · urgency อัตโนมัติ</span>
-        </li>
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">พร้อมส่งหลัง review เพียงครั้งเดียว</span>
-        </li>
+        <li><span class="check-icon g">✓</span><span>ทำธุรกิจออนไลน์มากกว่า <strong>10 ปี</strong></span></li>
+        <li><span class="check-icon g">✓</span><span>ช่วยนักเรียนกว่า <strong>1,000+ คน</strong> ด้าน Digital Marketing</span></li>
+        <li><span class="check-icon g">✓</span><span>ยอดขายของนักเรียนรวมกันเกิน <strong style="color:var(--terra);">100 ล้านบาท</strong></span></li>
+        <li><span class="check-icon g">✓</span><span>สร้างรายได้ออนไลน์ส่วนตัวเกิน <strong style="color:var(--terra);">60 ล้านบาท</strong></span></li>
+        <li><span class="check-icon g">✓</span><span>จบการศึกษาจาก <strong>Waldorf University</strong> สหรัฐอเมริกา · Mass Communications</span></li>
+      </ul>
+      <div style="margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;color:var(--terra);">691K</div><div style="font-size:11px;opacity:0.5;">YouTube</div></div>
+        <div style="text-align:center;"><div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;color:var(--terra);">686K</div><div style="font-size:11px;opacity:0.5;">Facebook</div></div>
+        <div style="text-align:center;"><div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;color:var(--terra);">144.6K</div><div style="font-size:11px;opacity:0.5;">TikTok</div></div>
+        <div style="text-align:center;"><div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;color:var(--terra);">46.6K</div><div style="font-size:11px;opacity:0.5;">Instagram</div></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Story -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">เรื่องจริงที่ทำให้ทุกอย่างเปลี่ยน</div>
+
+    <div class="highlight">
+      <strong>ช่วงที่ธุรกิจดีที่สุด — ก็คือช่วงที่จ่ายแพงที่สุด</strong><br>
+      ค่าใช้จ่ายฝ่ายการตลาดของติน่าอยู่ที่ <strong>308,000 บาท/เดือน</strong> — นักการตลาด, นักเขียนโฆษณา, กราฟิก, agency ฯลฯ จ่ายแพงมาก แต่ output ไม่ได้โตตามสัดส่วนเลย
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">ลอง ChatGPT แล้วไม่ work เพราะอะไร?</div>
+      <ul class="check-list">
+        <li><span class="check-icon r">✕</span><span>ตอบมาเป็น 10 ตัวเลือก แต่ต้องการแค่ 1 ที่ใช้ได้เลย</span></li>
+        <li><span class="check-icon r">✕</span><span>ต้อง copy paste ทุกอย่างเอง format เอง อัพโหลดเอง โพสต์เอง</span></li>
+        <li><span class="check-icon r">✕</span><span>ถ้า prompt ไม่ดี ผลลัพธ์ก็แย่ — ต้องเรียน "วิธี prompt" ก่อนถึงจะใช้ได้</span></li>
+        <li><span class="check-icon r">✕</span><span>สุดท้ายเป็นคนทำงานให้ AI — ไม่ใช่ AI ทำงานให้</span></li>
       </ul>
     </div>
-  </div>
-</div>
 
-<!-- SLIDE 15: Demo 2 Cost anchor -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">หลัง Demo 2</div>
-    <h3 style="margin-bottom: 32px; font-size: 26px;">นักเขียนโฆษณาดีๆ ราคาเท่าไหร่?</h3>
-    <div class="card-grid card-grid-2" style="max-width: 700px; margin: 0 auto;">
-      <div class="card" style="text-align: center; padding: 32px;">
-        <div style="font-size: 14px; opacity: 0.5; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em;">จ้าง นักเขียนโฆษณา</div>
-        <div style="font-size: 32px; font-weight: 700; color: rgba(255,255,255,0.8);">25,000–50,000 ฿</div>
-        <div style="font-size: 14px; opacity: 0.4; margin-top: 8px;">ต่อเดือน · งานไม่จำกัดหัวข้อ</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">จนกระทั่งเจอ Claude</div>
+      <p>ครั้งแรกที่ให้ Claude ช่วยคิด hook และ content ideas — มันไม่ได้พ่นคำตอบออกมาทีเดียว <strong style="color:var(--terra);">มันถามกลับ</strong> ถามว่ากลุ่มเป้าหมายคือใคร tone ที่ต้องการเป็นแบบไหน มี context อะไรที่ควรรู้ไหม</p>
+      <p style="margin-top:12px;">มันไม่ได้ assume ว่ามันรู้ทุกอย่าง — มันทำตัวเหมือน <strong>พาร์ทเนอร์</strong> ที่อยากเข้าใจงานก่อนลงมือทำ</p>
+      <div style="margin-top:14px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:14px;font-style:italic;opacity:0.7;">"นี่แหละคือสิ่งที่เราต้องการมาตลอด"</div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-box">
+        <div class="compare-label">ก่อน</div>
+        <div class="compare-num" style="font-size:22px;">308,000 ฿</div>
+        <div class="compare-sub">ต่อเดือน</div>
       </div>
-      <div class="card" style="text-align: center; padding: 32px; border-color: rgba(204,120,92,0.4);">
-        <div style="font-size: 14px; color: var(--terra); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Claude Cowork</div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--terra);">ไม่จำกัด</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 8px;">เขียนได้ทุกวัน ทุกเวลา ทุกหัวข้อ</div>
+      <div class="compare-box after">
+        <div class="compare-label after">ตอนนี้</div>
+        <div class="compare-num after" style="font-size:22px;">72,000 ฿</div>
+        <div class="compare-sub">ต่อเดือน</div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- SLIDE 16: Demo 3 Intro - Strategy Machine -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="demo-header" style="margin: 0 auto 32px;">
-      <div class="demo-dot"></div>
-      <span style="font-size: 15px; font-weight: 600; color: var(--terra);">LIVE DEMO 3 / 3</span>
-      <span style="font-size: 15px; opacity: 0.6; margin-left: 4px;">· Strategy Machine</span>
+    <div class="savings-pill">
+      <div>ประหยัดได้</div>
+      <div>236,000 ฿/เดือน · เกือบ 3 ล้านบาท/ปี</div>
     </div>
-    <h2 style="margin-bottom: 16px;">Strategy Machine<br>วิเคราะห์คู่แข่ง & ลูกค้า</h2>
-    <p class="sub" style="margin-bottom: 40px;">Claude วิเคราะห์คู่แข่งและแบบสอบถามลูกค้าให้คุณ<br>แล้วสรุปเป็น insight พร้อมใช้ตัดสินใจทันที</p>
-    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 24px 32px; text-align: left;">
-      <div style="font-size: 15px; font-weight: 600; color: var(--terra); margin-bottom: 16px; letter-spacing: 0.08em; text-transform: uppercase;">สิ่งที่จะเห็น</div>
+
+    <div class="divider"></div>
+
+    <!-- Cowork vs Claude ทั่วไป -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">Claude Cowork vs Claude ทั่วไป — ต่างกันยังไง?</div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">Claude ทั่วไป (claude.ai)</div>
+      <p>เป็น chat interface — คุณถาม มันตอบ แค่นั้น งานที่เหลือคุณต้องทำเอง copy paste เอง format เอง อัพโหลดเอง</p>
+    </div>
+
+    <div class="card" style="border-color:rgba(204,120,92,0.4);margin-bottom:16px;">
+      <div class="card-title">Claude Cowork (desktop app)</div>
+      <p>เป็น desktop app ที่ Claude ทำงาน <strong>นอก chat</strong> ได้ด้วย — เชื่อมต่อกับ Notion, Line OA, Google Drive และ apps อื่นๆ แล้วทำงานแทนคุณข้างนอกเลย คุณแค่ review และ approve</p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--cream);border-radius:8px;font-size:13px;">ดาวน์โหลดได้ที่ <strong style="color:var(--terra);">claude.ai</strong> → เลือก Claude for Desktop</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Notion workflow -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">Notion Workflow ทำงานยังไง?</div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <p style="margin-bottom:14px;">Notion คือ "สำนักงานกลาง" ที่ทั้งคุณและ Claude ทำงานในที่เดียวกัน ทุก content ไหลผ่าน 4 สถานะนี้:</p>
+      <div style="display:flex;gap:0;align-items:center;flex-wrap:wrap;gap:6px;">
+        <div style="background:var(--terra-light);border:1px solid rgba(204,120,92,0.3);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;">💡 Ideas<br><span style="font-size:11px;opacity:0.6;font-weight:400;">Claude เก็บไอเดีย</span></div>
+        <div style="color:var(--terra);font-size:18px;">→</div>
+        <div style="background:var(--terra-light);border:1px solid rgba(204,120,92,0.3);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;">✓ Approved<br><span style="font-size:11px;opacity:0.6;font-weight:400;">คุณ approve</span></div>
+        <div style="color:var(--terra);font-size:18px;">→</div>
+        <div style="background:var(--terra-light);border:1px solid rgba(204,120,92,0.3);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;">📝 Ready<br><span style="font-size:11px;opacity:0.6;font-weight:400;">Claude สร้างเสร็จ</span></div>
+        <div style="color:var(--terra);font-size:18px;">→</div>
+        <div style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;color:var(--green);">✅ Posted<br><span style="font-size:11px;opacity:0.6;font-weight:400;">Claude โพสต์</span></div>
+      </div>
+      <p style="margin-top:14px;font-size:14px;opacity:0.7;">คุณทำงานแค่ช่วง Approve — ที่เหลือ Claude จัดการให้ทั้งหมด</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 3 Machines intro -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">ทำไมต้องเริ่มจาก 3 Machines นี้?</div>
+
+    <div class="highlight">
+      <strong>หลัก: โฟกัสจุดที่ให้ผลตอบแทนมากที่สุดก่อน</strong><br>
+      ไม่ใช่ automating ทุกอย่างพร้อมกัน แต่เลือก 3 จุดที่ลงทุนน้อย และให้ผลตอบแทนที่โตแบบทบต้น
+    </div>
+
+    <div class="machine-card" style="margin-bottom:10px;">
+      <div class="machine-header" style="margin-bottom:8px;">
+        <div class="machine-icon">📣</div>
+        <div><div class="machine-name" style="font-size:16px;">Content Machine</div><div class="machine-desc">เริ่มก่อนเสมอ — เพราะสร้าง Reach และ Leads ที่ทำให้ทุก Machine อื่นทำงานได้</div></div>
+      </div>
+    </div>
+
+    <div class="machine-card" style="margin-bottom:10px;">
+      <div class="machine-header" style="margin-bottom:8px;">
+        <div class="machine-icon">🚀</div>
+        <div><div class="machine-name" style="font-size:16px;">Launch Machine</div><div class="machine-desc">เปิดตัว offer ได้เร็วขึ้น ทดสอบ funnel ได้เร็วขึ้น — ลดเวลา launch จากสัปดาห์เหลือชั่วโมง</div></div>
+      </div>
+    </div>
+
+    <div class="machine-card" style="margin-bottom:16px;">
+      <div class="machine-header" style="margin-bottom:8px;">
+        <div class="machine-icon">🔍</div>
+        <div><div class="machine-name" style="font-size:16px;">Strategy Machine</div><div class="machine-desc">วิเคราะห์คู่แข่งและลูกค้าได้ในนาทีแทนที่จะเป็นวัน — ตัดสินใจได้เร็วและแม่นยำขึ้น</div></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">3 ปัญหาใหญ่ของเจ้าของธุรกิจที่ใช้ AI</div>
+    <div class="pain-card">
+      <div class="pain-pct">~32%</div>
+      <div><div class="pain-title">เครื่องมือเยอะเกินไป — ไม่รู้จะเริ่มจากไหน</div><div class="pain-quotes">"มี tools ให้เลือกเยอะมาก" · "ไม่มี blueprint ชัดเจน" · "ตัวเลือกเยอะจนไม่กล้าลงมือทำ"</div></div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-pct">~21%</div>
+      <div><div class="pain-title">จ้างเพิ่มก็แพง ไม่จ้างก็งานล้น — ไม่รู้จะทำยังไง</div><div class="pain-quotes">"จ่ายเงินเดือนทีมไปเต็มๆ แต่ output น้อยและช้า" · "ต้นทุนสูงขึ้นทุกปี แต่ผลลัพธ์ไม่โต"</div></div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-pct">~17%</div>
+      <div><div class="pain-title">ใช้ AI แล้ว แต่ยังทำงานเองอยู่</div><div class="pain-quotes">"ยังต้อง copy paste ทุกอย่างเอง" · "ทีมปรับตัวกับ tools ไม่ทัน" · "AI ตอบแล้วแต่ยังต้องแก้เองอีกครึ่งชั่วโมง"</div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">Claude ไม่ใช่แค่ Chatbot — มันทำงานแทนคุณ</div>
+
+    <div class="flow-wrap">
+      <div class="flow-label">วิธีเก่า — ใช้ AI ทั่วไป</div>
+      <div class="flow-row">
+        <div class="flow-box">Input<br><small>คุณ</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box ai">Generate<br><small>AI</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box long">Copy · Paste · Format · อัพโหลด · โพสต์เอง...<br><small style="color:var(--red);opacity:0.8;">คุณทำงานทั้งหมดเอง</small></div>
+      </div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-label new">วิธีใหม่ — Claude Cowork</div>
+      <div class="flow-row">
+        <div class="flow-box">Input<br><small>คุณ</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box ai">Generate<br><small>Claude</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">Review<br><small>คุณ</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box ai">Publish<br><small>Claude</small></div>
+      </div>
+      <div class="flow-note good">✓ Quality control อยู่ที่คุณ — งานหนักทั้งหมดเป็นของ Claude</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">ต้นทุนทีมการตลาด — ก่อน vs หลังใช้ AI</div>
+
+    <div class="cost-table">
+      <div style="font-size:12px;opacity:0.45;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;">Before — สิ่งที่ต้องจ่ายทุกเดือน</div>
+      <div class="cost-row"><span>ทำคอนเทนต์</span><span>28,000 ฿</span></div>
+      <div class="cost-row"><span>เขียนโฆษณา</span><span>35,000 ฿</span></div>
+      <div class="cost-row"><span>รีโพส/ดัดแปลงคอนเทนต์</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>เขียนสคริปต์วิดีโอ</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>วางแผนคอนเทนต์รายสัปดาห์</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>ทำแคมเปญเปิดตัว (Launch)</span><span>105,000 ฿</span></div>
+      <div class="cost-row"><span>วิเคราะห์คู่แข่ง</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>วิเคราะห์แบบสอบถามลูกค้า</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>รายงานผลแคมเปญ</span><span>17,500 ฿</span></div>
+      <div class="cost-row"><span>ออกแบบ/จัดโปร (Offer)</span><span>35,000 ฿</span></div>
+      <div class="cost-total"><span>รวม/เดือน</span><span>308,000 ฿</span></div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-box">
+        <div class="compare-label">ก่อน</div>
+        <div class="compare-num">308,000 ฿</div>
+        <div class="compare-sub">ต่อเดือน</div>
+      </div>
+      <div class="compare-box after">
+        <div class="compare-label after">Now · Claude</div>
+        <div class="compare-num after">72,000 ฿</div>
+        <div class="compare-sub">ต่อเดือน</div>
+      </div>
+    </div>
+
+    <div class="savings-pill">
+      <div>ประหยัดได้</div>
+      <div>236,000 ฿/เดือน · เกือบ 3 ล้านบาท/ปี</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="card-title">Claude Cowork เชื่อมต่อกับ Apps ที่คุณใช้อยู่แล้ว</div>
       <ul class="check-list">
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">Claude อ่านข้อมูลคู่แข่งแล้วสรุปจุดแข็ง จุดอ่อน และโอกาส</span>
-        </li>
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">Claude วิเคราะห์คำตอบแบบสอบถามลูกค้าและหา pattern</span>
-        </li>
-        <li>
-          <span class="check-icon check-green">✓</span>
-          <span style="font-size: 16px;">Claude สรุปเป็น action items ที่นำไปใช้ได้ทันที</span>
-        </li>
+        <li><span class="check-icon g">✓</span><span><strong>Notion</strong> — เก็บ content · review · approve ในที่เดียว</span></li>
+        <li><span class="check-icon g">✓</span><span><strong>Line OA</strong> — draft และส่ง broadcast ได้โดยไม่ต้องสลับ app</span></li>
+        <li><span class="check-icon g">✓</span><span><strong>Google Drive</strong> — เก็บไฟล์ รูป วิดีโอ และดึง link มาใช้ได้ทันที</span></li>
+      </ul>
+      <div style="margin-top:14px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:14px;">คุณไม่ต้อง copy paste อีกต่อไป — Claude Cowork จัดการทุก app ให้</div>
+    </div>
+
+    <div class="highlight">
+      <strong>หลักสำคัญ: โฟกัสจุดที่ให้ผลตอบแทนมากที่สุดก่อน</strong><br>
+      อย่า prioritize สิ่งที่ประหยัดเวลา — prioritize สิ่งที่ให้ผลตอบแทน<u>มากที่สุดในเวลาน้อยที่สุด</u>
+    </div>
+
+  </div>
+</div>
+
+<!-- 3 DEMOS -->
+<div id="machines">
+  <div class="section-divider">
+    <div class="section-divider-inner">
+      <div class="sdiv-icon">⚙️</div>
+      <div><h2>3 <span>Live Demos</span></h2><p>ดูวิดีโอย้อนหลังเพื่อเห็น demo จริงๆ</p></div>
+    </div>
+  </div>
+  <div class="section-wrap">
+
+    <a href="https://vimeo.com/1187371588?share=copy&fl=sv&fe=ci" target="_blank" class="video-banner" style="margin-bottom:24px;">
+      <div class="video-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <div class="video-text"><div>ดู Demo ย้อนหลัง</div><div>กดเพื่อเปิดวิดีโอ</div></div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">📣</div>
+        <div>
+          <div class="machine-sub">Demo 1 / 3</div>
+          <div class="machine-name">Content Machine</div>
+          <div class="machine-desc">โพสต์คอนเทนท์ลง Social Media</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">ทำคอนเทนต์</span><span class="tag">เขียนโฆษณา</span><span class="tag">รีโพส/ดัดแปลง</span><span class="tag">เขียนสคริปต์วิดีโอ</span><span class="tag">วางแผนคอนเทนต์</span>
+      </div>
+      <div class="demo-note">🎬 <span>ดู demo นี้ตั้งแต่ต้นใน <a href="https://vimeo.com/1187371588?share=copy&fl=sv&fe=ci" target="_blank">วิดีโอย้อนหลัง</a> — เห็น Claude โพสต์คอนเทนท์สดๆ</span></div>
+    </div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">🚀</div>
+        <div>
+          <div class="machine-sub">Demo 2 / 3</div>
+          <div class="machine-name">Launch Machine</div>
+          <div class="machine-desc">เปิดตัว Offer · Sales Funnel · Landing Page</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">ทำแคมเปญ Launch</span><span class="tag">Sales Page</span><span class="tag">ออกแบบ Offer</span><span class="tag">Funnel พร้อมใช้</span>
+      </div>
+      <div class="demo-note">🎬 <span>ดู demo นี้ใน <a href="https://vimeo.com/1187371588?share=copy&fl=sv&fe=ci" target="_blank">วิดีโอย้อนหลัง</a> — เห็น Claude สร้าง sales page สดๆ</span></div>
+    </div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">🔍</div>
+        <div>
+          <div class="machine-sub">Demo 3 / 3</div>
+          <div class="machine-name">Strategy Machine</div>
+          <div class="machine-desc">วิเคราะห์คู่แข่ง & แบบสอบถามลูกค้า</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">วิเคราะห์คู่แข่ง</span><span class="tag">วิเคราะห์แบบสอบถาม</span><span class="tag">รายงานผลแคมเปญ</span><span class="tag">ตัดสินใจได้เร็วขึ้น</span>
+      </div>
+      <div class="demo-note">🎬 <span>ดู demo นี้ใน <a href="https://vimeo.com/1187371588?share=copy&fl=sv&fe=ci" target="_blank">วิดีโอย้อนหลัง</a> — เห็น Claude วิเคราะห์ข้อมูลให้สดๆ</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROMPTS -->
+<div id="prompts">
+  <div class="section-divider">
+    <div class="section-divider-inner">
+      <div class="sdiv-icon">💬</div>
+      <div><h2><span>Prompts</span> ที่ใช้ใน Session</h2><p>Copy & Paste ได้เลย</p></div>
+    </div>
+  </div>
+  <div class="section-wrap">
+
+    <div class="prompt-box">
+      <div class="prompt-label">Claude COWORK · หาไอเดียทำคลิปจาก YouTube</div>
+      <div class="prompt-text" id="p1">ช่วยค้นหาคลิป YouTube ที่กำลังไวรัลในช่วง 7 วันที่ผ่านมา ในหัวข้อที่เกี่ยวกับ "AI สำหรับธุรกิจ" หรือ "ลดต้นทุนธุรกิจด้วย AI"
+
+สำหรับแต่ละคลิปให้บอก:
+- ชื่อคลิปและ channel
+- ยอดวิว / engagement
+- แก่นหลักของคลิปนี้คืออะไร
+- ทำไมมันถึงไวรัล — hook หรือมุมมองอะไรที่ทำให้คนดู
+- นำมุมนี้มาปรับสำหรับกลุ่มเจ้าของธุรกิจไทยได้อย่างไร
+
+หามาทุกวัน วันละ 3 คลิปที่ดี เสร็จแล้วใส่อัพเดทไว้ใน idea ใน notion ตั้งชื่อคลิปหัวข้อขึ้นต้นด้วยคำว่า [คลิปไวรัลจาก YT]</div>
+      <button class="copy-btn" onclick="copyPrompt('p1', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt</button>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-label">Claude COWORK · ตั้งเวลา Approve Content</div>
+      <div class="prompt-text" id="p2">นำ Content [คลิปไวรัล YT] ที่อยู่ใน Approved ใน notion มาสร้างเป็นสคริปท์คลิปยาว 3 นาที
+
+แสกนหน้านี้ทุกวัน ถ้ามีอยู่ใน Approved เพิ่มเติม ก็สร้างสคริปท์คลิปได้เลย ใส่ Hook ใส่สคริปท์ ใส่ CTA เพื่อเพิ่ม engagement
+
+พอสร้างสคริปท์เสร็จแล้ว ฝากย้ายสคริปท์ที่สร้างออกจาก Approved ไปอยู่ในแท็บ Review ด้วย</div>
+      <button class="copy-btn" onclick="copyPrompt('p2', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt</button>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-label">Claude COWORK · แคมเปญ Line OA</div>
+      <div class="prompt-text" id="p3">ช่วยแพลนแคมเปญ LINE OA 4 ข้อนี้ ใน Notion Campaign: [ใส่ชื่อแคมเปญ]
+
+- ภาพรวมแคมเปญ
+- ตาราง Broadcast
+- Segment เป้าหมาย
+- ข้อความและ Creative</div>
+      <button class="copy-btn" onclick="copyPrompt('p3', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt</button>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-label">Claude COWORK · Repurpose คลิปไวรัล</div>
+      <div class="prompt-text" id="p4">คลิปนี้กำลังไวรัลในโซเชียล ช่วยดูคลิปนี้เป็นแนวทาง แล้วเขียน:
+
+- สคริปท์วิดิโอยาว 1-3 นาที จำนวน 3 คลิป
+- บทความสำหรับเฟสบุ๊ค 3 บทความ
+- Hook สำหรับ Reel 3 หัวข้อ
+
+โดยดึงแก่นของคลิปนี้มาปรับให้เข้ากับธุรกิจและกลุ่มเป้าหมายของบริษัท (ข้อมูลเพิ่มเติมดึงจาก notion)
+
+เสร็จแล้ว ใส่เอาไว้ใน idea ใน notion ได้เลย</div>
+      <button class="copy-btn" onclick="copyPrompt('p4', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt</button>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-label">Claude Chrome Extension · วิเคราะห์ Instagram</div>
+      <div class="prompt-text" id="p5">วิเคราะห์โปรไฟล์ Instagram นี้ให้หน่อย โดยแยกให้ชัดเจนว่า:
+
+- คอนเทนต์ธีมไหนกำลังได้ผลตอบรับดีที่สุด
+- หัวข้ออะไรที่สร้าง Engagement สูงที่สุด
+- ช่องว่างหรือจุดอ่อนหลักของกลยุทธ์นี้อยู่ตรงไหน
+- กลุ่มผู้ติดตามนี้มีแนวโน้มจะยอมจ่ายเงินซื้อสินค้าแบบไหนได้จริง</div>
+      <button class="copy-btn" onclick="copyPrompt('p5', this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- เหมาะกับใคร -->
+<div id="fit">
+  <div class="section-divider">
+    <div class="section-divider-inner">
+      <div class="sdiv-icon">✓</div>
+      <div><h2>เหมาะ<span>กับใคร</span></h2><p>เช็คตัวเองก่อนเริ่ม</p></div>
+    </div>
+  </div>
+  <div class="section-wrap">
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title" style="color:var(--green);">✓ เหมาะถ้าคุณเป็นแบบนี้</div>
+      <ul class="check-list">
+        <li><span class="check-icon g">✓</span><span>เจ้าของธุรกิจที่มีทีมงานและอยากลดต้นทุนโดยไม่ต้องจ้างคนเพิ่ม</span></li>
+        <li><span class="check-icon g">✓</span><span>ธุรกิจที่ต้องการ content สม่ำเสมอแต่ทีมไม่พอ หรือ output ช้า</span></li>
+        <li><span class="check-icon g">✓</span><span>เจ้าของหรือทีมที่ใช้ AI บ้างแล้วแต่ยังทำเองทุกอย่าง</span></li>
+        <li><span class="check-icon g">✓</span><span>คนที่อยากให้ AI ทำงาน ไม่ใช่แค่ตอบคำถาม</span></li>
+        <li><span class="check-icon g">✓</span><span>ธุรกิจทุกประเภท — e-commerce, service, coaching, agency</span></li>
       </ul>
     </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--red);">✕ ไม่เหมาะถ้าคุณเป็นแบบนี้</div>
+      <ul class="check-list">
+        <li><span class="check-icon r">✕</span><span>คาดหวังว่า AI จะทำทุกอย่างโดยไม่ต้อง review เลย</span></li>
+        <li><span class="check-icon r">✕</span><span>ไม่พร้อมเรียนรู้และปรับ workflow ของธุรกิจตัวเอง</span></li>
+        <li><span class="check-icon r">✕</span><span>ต้องการ magic bullet ที่ไม่ต้องลงมือทำอะไรเลย</span></li>
+        <li><span class="check-icon r">✕</span><span>ธุรกิจที่ยังไม่มี offer หรือลูกค้าเลย</span></li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <strong>สิ่งที่ต้องมีก่อนเริ่ม:</strong><br>
+      Claude Cowork (paid) · Notion (free) · Google Account · Social media accounts ที่จะโพสต์
+    </div>
+
   </div>
 </div>
 
-<!-- SLIDE 17: Demo 3 Cost anchor -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">หลัง Demo 3</div>
-    <h3 style="margin-bottom: 32px; font-size: 26px;">จ้าง Agency ราคาเท่าไหร่?</h3>
-    <div class="card-grid card-grid-2" style="max-width: 700px; margin: 0 auto;">
-      <div class="card" style="text-align: center; padding: 32px;">
-        <div style="font-size: 14px; opacity: 0.5; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em;">จ้าง Market Research Agency</div>
-        <div style="font-size: 32px; font-weight: 700; color: rgba(255,255,255,0.8);">50,000–150,000 ฿</div>
-        <div style="font-size: 14px; opacity: 0.4; margin-top: 8px;">รอ 2–4 สัปดาห์</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 32px; border-color: rgba(204,120,92,0.4);">
-        <div style="font-size: 14px; color: var(--terra); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Claude Cowork</div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--terra);">&lt; 10 นาที</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 8px;">วิเคราะห์ได้ทุกวัน ไม่จำกัดจำนวนครั้ง</div>
-      </div>
+<!-- BOOTCAMP -->
+<div id="offer">
+  <div class="section-divider">
+    <div class="section-divider-inner">
+      <div class="sdiv-icon">🚀</div>
+      <div><h2>Business Growth <span>Bootcamp</span></h2><p>โปรแกรม 4 สัปดาห์ สร้างทีมการตลาด AI ให้ธุรกิจคุณ</p></div>
     </div>
   </div>
-</div>
+  <div class="section-wrap">
 
-<!-- SLIDE 19: Reflection question -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="accent-line" style="margin: 0 auto 24px;"></div>
-    <h2 style="font-size: 40px; margin-bottom: 24px;">ตอนนี้ในธุรกิจของคุณ</h2>
-    <h2 style="font-size: 36px; color: var(--terra); margin-bottom: 40px;">"งานไหนที่ Claude น่าจะช่วยได้มากที่สุด?"</h2>
-    <p style="font-size: 18px; opacity: 0.6;">พิมพ์ใน chat ได้เลยค่ะ — อยากรู้ว่าคุณคิดอะไรอยู่</p>
-  </div>
-</div>
+    <!-- What is this -->
+    <div class="card">
+      <div class="card-title">Claude COWORK: Business Growth Bootcamp คืออะไร?</div>
+      <p>โปรแกรม 4 สัปดาห์ที่จะสร้าง Claude Skills ให้คุณ ติดตั้งให้ และเปลี่ยนทีมการตลาดของคุณให้เป็น AI-native — ไม่ใช่แค่สอนทฤษฎี แต่ลงมือ build ด้วยกันจริงๆ ทุกสัปดาห์</p>
+      <div style="margin-top:14px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:14px;line-height:1.7;">
+        ทุกสัปดาห์คุณได้รับ <strong>Claude Skills สำเร็จรูป</strong> พร้อม <strong>Video Training</strong> และ <strong>Q&A Session</strong> สดกับติน่า
+      </div>
+    </div>
 
-<!-- SLIDE 20: เหมาะกับใคร -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">เหมาะกับใคร</div>
-    <h2 style="margin-bottom: 32px;"><span style="color: var(--terra);">เหมาะ</span>ถ้าคุณเป็นแบบนี้</h2>
-    <ul class="check-list" style="max-width: 760px;">
-      <li>
-        <span class="check-icon check-green">✓</span>
-        <span style="font-size: 18px;">เจ้าของธุรกิจที่มีทีมงานและอยากลดต้นทุนโดยไม่ต้องจ้างคนเพิ่ม</span>
-      </li>
-      <li>
-        <span class="check-icon check-green">✓</span>
-        <span style="font-size: 18px;">ธุรกิจที่ต้องการ content สม่ำเสมอแต่ทีมไม่พอ หรือ output ช้า</span>
-      </li>
-      <li>
-        <span class="check-icon check-green">✓</span>
-        <span style="font-size: 18px;">เจ้าของหรือทีมที่ใช้ AI บ้างแล้วแต่ยังทำเองทุกอย่าง</span>
-      </li>
-      <li>
-        <span class="check-icon check-green">✓</span>
-        <span style="font-size: 18px;">คนที่อยากให้ AI ทำงาน ไม่ใช่แค่ตอบคำถาม</span>
-      </li>
-      <li>
-        <span class="check-icon check-green">✓</span>
-        <span style="font-size: 18px;">ธุรกิจทุกประเภท — e-commerce, service, coaching, agency</span>
-      </li>
+    <div class="divider"></div>
+
+    <!-- Value stack -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">สิ่งที่คุณได้รับทั้งหมด</div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">🛠 Claude Skills สำเร็จรูป — Done For You</div>
+      <ul class="check-list">
+        <li><span class="check-icon g">✓</span><div><strong>Claude Skills: Facebook / Instagram / TikTok</strong><br><span style="font-size:13px;opacity:0.6;">โพสต์ · Carousel · Reels · Short-form content</span></div></li>
+        <li><span class="check-icon g">✓</span><div><strong>Claude Skills: YouTube / Video</strong><br><span style="font-size:13px;opacity:0.6;">YouTube Shorts · Video Script · Video Ads</span></div></li>
+        <li><span class="check-icon g">✓</span><div><strong>Claude Skills: Facebook Ads</strong><br><span style="font-size:13px;opacity:0.6;">Ad creatives · Primary text · Video ads</span></div></li>
+        <li><span class="check-icon g">✓</span><div><strong>Claude Skills: Line OA</strong><br><span style="font-size:13px;opacity:0.6;">Broadcast · Welcome · Follow-up · Promo</span></div></li>
+        <li><span class="check-icon g">✓</span><div><strong>Claude Skills: Sales Funnels</strong><br><span style="font-size:13px;opacity:0.6;">Sales Page · Checkout · Upsell · Registration Page</span></div></li>
+      </ul>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">🎬 4 Live Classes กับติน่า</div>
+      <p>Live video training ทุกสัปดาห์ ประมาณ 90 นาที/ครั้ง — ดู build จริง ทำตามได้เลย บันทึกไว้ดูย้อนหลังได้ตลอด</p>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">❓ 4 Q&A Sessions กับติน่า</div>
+      <p>ถามได้ทุกอย่างที่ติดขัด ติน่าตอบสดทุกครั้ง — ไม่มีคำถามที่โง่เกินไป Q&A จัดหลัง Live Class ทันที ยาว 30 นาที</p>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">📋 Notion Templates พร้อมใช้</div>
+      <p>Template สำเร็จรูปสำหรับ Content Calendar · Campaign Planner · Review Board — clone เข้า Notion ของคุณได้ทันที</p>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">👥 Private Group</div>
+      <p>เข้าถึงกลุ่ม private กับติน่าและผู้เรียนทุกคน — แชร์ผลลัพธ์ ถามคำถาม และ network กับเจ้าของธุรกิจที่ใช้ AI เหมือนกัน</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">♾️ Lifetime Access</div>
+      <p>ทุก Skills และ Recording เก็บไว้ได้ตลอด — ไม่มีวันหมดอายุ อัปเดตใหม่ก็ได้รับเพิ่ม</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Curriculum -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;">หลักสูตร 4 สัปดาห์</div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">📊</div>
+        <div>
+          <div class="machine-sub">สัปดาห์ที่ 1</div>
+          <div class="machine-name" style="font-size:16px;">สร้าง Dashboard ธุรกิจผ่าน Notion</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">ตั้งค่า Notion Workspace</span>
+        <span class="tag">สร้าง Content Calendar</span>
+        <span class="tag">เชื่อมต่อ Claude กับ Notion</span>
+        <span class="tag">ตั้งระบบ Approve/Review</span>
+        <span class="tag">สร้าง Brand Voice Document</span>
+      </div>
+    </div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">📣</div>
+        <div>
+          <div class="machine-sub">สัปดาห์ที่ 2</div>
+          <div class="machine-name" style="font-size:16px;">สร้าง Content Machine</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">ทำคอนเทนต์</span>
+        <span class="tag">เขียนโฆษณา</span>
+        <span class="tag">รีโพส/ดัดแปลงคอนเทนต์</span>
+        <span class="tag">เขียนสคริปต์วิดีโอ</span>
+        <span class="tag">วางแผนคอนเทนต์รายสัปดาห์</span>
+      </div>
+    </div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">🚀</div>
+        <div>
+          <div class="machine-sub">สัปดาห์ที่ 3</div>
+          <div class="machine-name" style="font-size:16px;">สร้าง Launch Machine</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">ทำแคมเปญเปิดตัว (Launch)</span>
+        <span class="tag">วิเคราะห์คู่แข่ง</span>
+        <span class="tag">วิเคราะห์แบบสอบถามลูกค้า</span>
+        <span class="tag">รายงานผลแคมเปญ</span>
+        <span class="tag">ออกแบบ/จัดโปร (Offer)</span>
+      </div>
+    </div>
+
+    <div class="machine-card">
+      <div class="machine-header">
+        <div class="machine-icon">💬</div>
+        <div>
+          <div class="machine-sub">สัปดาห์ที่ 4</div>
+          <div class="machine-name" style="font-size:16px;">สร้าง Line Machine</div>
+        </div>
+      </div>
+      <div class="machine-tags">
+        <span class="tag">เขียน Broadcast Message</span>
+        <span class="tag">สร้าง Welcome Message</span>
+        <span class="tag">เขียนสคริปต์ Follow-up</span>
+        <span class="tag">ออกแบบ Promo Campaign</span>
+        <span class="tag">วางแผน Line OA Calendar</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- เหมาะกับใคร mini -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px;">เหมาะสำหรับใคร?</div>
+    <ul class="check-list" style="margin-bottom:20px;">
+      <li><span class="check-icon g">✓</span><span>เจ้าของธุรกิจที่มีทีมและอยากลดต้นทุนการตลาด</span></li>
+      <li><span class="check-icon g">✓</span><span>ธุรกิจที่ต้องการ content สม่ำเสมอแต่ทีมไม่พอ</span></li>
+      <li><span class="check-icon g">✓</span><span>คนที่ใช้ AI บ้างแล้วแต่ยังทำทุกอย่างเอง</span></li>
+      <li><span class="check-icon g">✓</span><span>ทุกประเภทธุรกิจ — e-commerce, service, coaching, agency</span></li>
     </ul>
-  </div>
-</div>
 
-<!-- SLIDE 21: ไม่เหมาะกับใคร -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">ไม่เหมาะกับใคร</div>
-    <h2 style="margin-bottom: 32px;"><span style="color: #E24B4A;">ไม่เหมาะ</span>ถ้าคุณเป็นแบบนี้</h2>
-    <ul class="check-list" style="max-width: 760px;">
-      <li>
-        <span class="check-icon check-red">✕</span>
-        <span style="font-size: 18px;">คาดหวังว่า AI จะทำทุกอย่างโดยไม่ต้อง review เลย</span>
-      </li>
-      <li>
-        <span class="check-icon check-red">✕</span>
-        <span style="font-size: 18px;">ไม่พร้อมเรียนรู้และปรับ workflow ของธุรกิจตัวเอง</span>
-      </li>
-      <li>
-        <span class="check-icon check-red">✕</span>
-        <span style="font-size: 18px;">ต้องการ magic bullet ที่ไม่ต้องลงมือทำอะไรเลย</span>
-      </li>
-      <li>
-        <span class="check-icon check-red">✕</span>
-        <span style="font-size: 18px;">ธุรกิจที่ยังไม่มี offer หรือลูกค้าเลย</span>
-      </li>
-    </ul>
-  </div>
-</div>
+    <div class="divider"></div>
 
-<!-- SLIDE 22: Bridge to offer -->
-<div class="slide bg-terra">
-  <div style="text-align: center; max-width: 800px;">
-    <h2 style="font-size: 46px; line-height: 1.3; margin-bottom: 24px;">คืนนี้คุณเห็นแล้วว่า<br>Claude ทำได้จริง</h2>
-    <p style="font-size: 24px; opacity: 0.85; line-height: 1.6;">คำถามต่อไปคือ —<br><strong>ธุรกิจของคุณจะเริ่มจากจุดไหนก่อน?</strong></p>
-  </div>
-</div>
+    <!-- Price reveal -->
+    <div style="font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;text-align:center;">ราคาพิเศษ</div>
 
-<!-- SLIDE 23: Introducing the Bootcamp -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">Claude COWORK</div>
-    <h1 style="margin-bottom: 20px; font-size: 56px; line-height: 1.15;">Business Growth<br><span style="color: var(--terra);">Bootcamp</span></h1>
-    <p style="font-size: 18px; opacity: 0.7; max-width: 600px; margin: 0 auto;">เราจะสร้าง Claude Skills ให้คุณ · ติดตั้งให้ · และเปลี่ยนทีมการตลาดของคุณให้เป็น AI-native ใน 4 สัปดาห์</p>
-    <div style="margin-top: 40px; display: flex; gap: 24px; justify-content: center;">
-      <div class="card" style="text-align: center; padding: 20px 32px;">
-        <div style="font-size: 28px; font-weight: 700; color: var(--terra);">4</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 4px;">สัปดาห์</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 20px 32px;">
-        <div style="font-size: 28px; font-weight: 700; color: var(--terra);">4</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 4px;">Live Classes</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 20px 32px;">
-        <div style="font-size: 28px; font-weight: 700; color: var(--terra);">4</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 4px;">Q&A Sessions</div>
-      </div>
-      <div class="card" style="text-align: center; padding: 20px 32px;">
-        <div style="font-size: 28px; font-weight: 700; color: var(--terra);">7+</div>
-        <div style="font-size: 14px; opacity: 0.6; margin-top: 4px;">Claude Skills</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 24: Curriculum -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">หลักสูตร 4 สัปดาห์</div>
-    <h2 style="margin-bottom: 32px;">สิ่งที่เราจะ<span style="color: var(--terra);"> สร้างด้วยกัน</span></h2>
-    <div style="display: flex; flex-direction: column; gap: 16px; max-width: 860px;">
-      <div class="module-card">
-        <div class="module-num">สัปดาห์ที่ 1</div>
-        <div class="module-title">สร้าง Dashboard ธุรกิจผ่าน Notion</div>
-        <div class="module-tags">
-          <span class="tag">ตั้งค่า Notion Workspace</span>
-          <span class="tag">สร้าง Content Calendar</span>
-          <span class="tag">เชื่อมต่อ Claude กับ Notion</span>
-          <span class="tag">ตั้งระบบ Approve/Review</span>
-          <span class="tag">สร้าง Brand Voice Document</span>
+    <div style="background:white;border-radius:20px;border:2px solid var(--terra);padding:28px 20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(204,120,92,0.15);text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:12px;opacity:0.45;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">ราคาปกติ</div>
+          <div style="font-family:'Kanit',sans-serif;font-size:44px;font-weight:700;color:rgba(26,26,26,0.25);text-decoration:line-through;line-height:1;">46,000 ฿</div>
+        </div>
+        <div style="font-size:28px;color:var(--terra);opacity:0.4;">→</div>
+        <div style="text-align:center;">
+          <div style="font-size:12px;color:var(--terra);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px;">ราคาพิเศษ</div>
+          <div style="font-family:'Kanit',sans-serif;font-size:44px;font-weight:700;color:var(--terra);line-height:1;">14,990 ฿</div>
         </div>
       </div>
-      <div class="module-card">
-        <div class="module-num">สัปดาห์ที่ 2</div>
-        <div class="module-title">สร้าง Content Machine</div>
-        <div class="module-tags">
-          <span class="tag">ทำคอนเทนต์</span>
-          <span class="tag">เขียนโฆษณา</span>
-          <span class="tag">รีโพส/ดัดแปลงคอนเทนต์</span>
-          <span class="tag">เขียนสคริปต์วิดีโอ</span>
-          <span class="tag">วางแผนคอนเทนต์รายสัปดาห์</span>
-        </div>
-      </div>
-      <div class="module-card">
-        <div class="module-num">สัปดาห์ที่ 3</div>
-        <div class="module-title">สร้าง Launch Machine</div>
-        <div class="module-tags">
-          <span class="tag">ทำแคมเปญเปิดตัว (Launch)</span>
-          <span class="tag">วิเคราะห์คู่แข่ง</span>
-          <span class="tag">วิเคราะห์แบบสอบถามลูกค้า</span>
-          <span class="tag">รายงานผลแคมเปญ</span>
-          <span class="tag">ออกแบบ/จัดโปร (Offer)</span>
-        </div>
-      </div>
-      <div class="module-card">
-        <div class="module-num">สัปดาห์ที่ 4</div>
-        <div class="module-title">สร้าง Line Machine</div>
-        <div class="module-tags">
-          <span class="tag">เขียน Broadcast Message</span>
-          <span class="tag">สร้าง Welcome Message</span>
-          <span class="tag">เขียนสคริปต์ Follow-up</span>
-          <span class="tag">ออกแบบ Promo Campaign</span>
-          <span class="tag">วางแผน Line OA Calendar</span>
-        </div>
-      </div>
+      <div style="margin-top:16px;font-size:13px;opacity:0.5;">จ่ายครั้งเดียว · ไม่มีค่าใช้จ่ายรายเดือน</div>
     </div>
+
+    <a href="https://lin.ee/qhZlMfX" target="_blank" class="offer-cta">กดที่นี่เพื่อสมัคร Bootcamp ผ่าน Line</a>
+    <div class="guarantee">ไม่มีความเสี่ยง — ไม่พอใจภายใน 15 วัน คืนเงินทันที</div>
+
   </div>
 </div>
 
-<!-- SLIDE 25: What you get -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content">
-    <div class="label">สิ่งที่คุณได้รับ</div>
-    <h2 style="margin-bottom: 32px;">ทุกอย่างใน Bootcamp</h2>
-    <div style="max-width: 820px;">
-      <table class="stack-table">
-        <tr>
-          <td>Claude Skills สำเร็จรูป: Instagram</td>
-          <td style="color: var(--terra);">มูลค่า 5,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Claude Skills สำเร็จรูป: YouTube / Video</td>
-          <td style="color: var(--terra);">มูลค่า 5,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Claude Skills สำเร็จรูป: Line OA / Email</td>
-          <td style="color: var(--terra);">มูลค่า 5,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Claude Skills สำเร็จรูป: Sales Funnel / Pages</td>
-          <td style="color: var(--terra);">มูลค่า 5,000 ฿</td>
-        </tr>
-        <tr>
-          <td>4 Live Classes กับ Tina (90 นาที/ครั้ง)</td>
-          <td style="color: var(--terra);">มูลค่า 10,000 ฿</td>
-        </tr>
-        <tr>
-          <td>4 Q&amp;A Sessions — ถามได้ทุกอย่าง</td>
-          <td style="color: var(--terra);">มูลค่า 8,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Notion Templates พร้อมใช้</td>
-          <td style="color: var(--terra);">มูลค่า 3,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Private Group — Tina + ผู้เรียนทุกคน</td>
-          <td style="color: var(--terra);">มูลค่า 5,000 ฿</td>
-        </tr>
-        <tr>
-          <td>Lifetime Access ทุก Skills และ Recording</td>
-          <td style="color: var(--terra);">ไม่มีกำหนด</td>
-        </tr>
-        <tr class="stack-total">
-          <td style="font-weight: 700;">มูลค่ารวม</td>
-          <td style="font-size: 24px; color: var(--terra);">46,000+ ฿</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 27: Price reveal -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">ราคา Bootcamp</div>
-    <h2 style="margin-bottom: 32px;">ราคาพิเศษ</h2>
-    <div class="price-old" style="font-size: 34px; color: #FFFFFF;">46,000 ฿</div>
-    <div class="price-new" style="margin-top: 16px;">14,990 ฿</div>
-    <div class="price-unit">จ่ายครั้งเดียว · ไม่มีค่าใช้จ่ายรายเดือน</div>
-    <div style="margin-top: 32px; padding: 16px 32px; background: rgba(204,120,92,0.12); border: 1px solid rgba(204,120,92,0.3); border-radius: 12px; display: inline-block;">
-      <span style="font-size: 16px; color: var(--terra); font-weight: 600;">ไม่มีความเสี่ยง — ไม่พอใจภายใน 15 วัน คืนเงินทันที</span>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE: Comparison - Team vs Bootcamp -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="width: 100%; max-width: 960px;">
-    <div class="label" style="text-align: center; margin-bottom: 8px;">เปรียบเทียบ</div>
-    <h2 style="text-align: center; margin-bottom: 28px;">จ้างทีมครบ <span style="color: rgba(255,255,255,0.4);">1 เดือน</span> vs Bootcamp <span style="color: var(--terra);">ตลอดชีวิต</span></h2>
-    <div style="display: flex; gap: 24px; align-items: flex-start;">
-      <div class="card" style="flex: 1; padding: 24px 28px;">
-        <div style="font-size: 13px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">ค่าจ้างทีม / เดือน</div>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">ทำคอนเทนต์</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">28,000 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">เขียนโฆษณา</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">35,000 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">รีโพส/ดัดแปลงคอนเทนต์</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">เขียนสคริปต์วิดีโอ</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">วางแผนคอนเทนต์รายสัปดาห์</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">ทำแคมเปญเปิดตัว (Launch)</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">105,000 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">วิเคราะห์คู่แข่ง</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">วิเคราะห์แบบสอบถามลูกค้า</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);"><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">รายงานผลแคมเปญ</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">17,500 ฿</td></tr>
-          <tr><td style="padding: 7px 0; font-size: 13px; opacity: 0.75;">ออกแบบ/จัดโปร (Offer)</td><td style="text-align: right; font-size: 13px; opacity: 0.6;">35,000 ฿</td></tr>
-        </table>
-        <div style="margin-top: 14px; padding-top: 14px; border-top: 0.5px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between;">
-          <span style="font-size: 13px; opacity: 0.5;">รวม/เดือน</span>
-          <span style="font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.5); font-family: 'Kanit', sans-serif;">308,000 ฿</span>
-        </div>
-        <div style="margin-top: 8px; display: flex; justify-content: space-between;">
-          <span style="font-size: 13px; opacity: 0.5;">12 เดือน</span>
-          <span style="font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.5); font-family: 'Kanit', sans-serif;">3,696,000 ฿/ปี</span>
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; font-size: 28px; color: var(--terra); padding-top: 80px;">vs</div>
-      <div class="card" style="flex: 0 0 240px; padding: 28px; border-color: rgba(204,120,92,0.4); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
-        <div style="font-size: 13px; color: var(--terra); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Bootcamp</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Claude_AI_symbol.svg" width="36" height="36" />
-        <div style="font-size: 42px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif; line-height: 1;">14,990 ฿</div>
-        <div style="font-size: 13px; opacity: 0.6;">จ่ายครั้งเดียว<br>ใช้ได้ตลอดชีวิต</div>
-        <div style="width: 100%; height: 0.5px; background: rgba(255,255,255,0.1);"></div>
-        <div style="font-size: 13px; opacity: 0.6; line-height: 1.6;">Claude ทำงานทุกอย่าง<br>ข้างซ้ายแทนคุณได้ทั้งหมด</div>
-      </div>
-    </div>
-    <div style="margin-top: 20px; padding: 14px 32px; background: rgba(204,120,92,0.12); border: 1px solid rgba(204,120,92,0.3); border-radius: 12px; text-align: center;">
-      <span style="font-size: 16px; color: var(--terra); font-weight: 700;">ประหยัดได้มากกว่า 3,681,010 ฿ ในปีแรก</span>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 26: Special bonus for assistants -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="label">สมัครภายในคืนนี้</div>
-    <h2 style="margin-bottom: 24px;">โบนัสพิเศษ<br><span style="color: var(--terra);">ส่งผู้ช่วยมาเรียนได้ด้วย 1 คน</span></h2>
-    <div class="card" style="max-width: 680px; margin: 0 auto; padding: 36px;">
-      <p style="font-size: 18px; line-height: 1.8; text-align: left; margin-bottom: 24px;">
-        <strong style="color: var(--terra);">1 ที่นั่ง = คุณ + ผู้ช่วย 1 คน</strong><br><br>
-        ไม่มีเวลาเรียนเอง? ไม่เป็นไร<br>
-        ส่งผู้ช่วยหรือ Marketing Manager มาเรียนแทนได้เลย<br>
-        แล้วให้เขาติดตั้งระบบ Claude ให้ธุรกิจคุณ
-      </p>
-      <div style="border-top: 0.5px solid rgba(255,255,255,0.1); padding-top: 24px;">
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="border-bottom: 0.5px solid rgba(255,255,255,0.08);">
-            <td style="padding: 12px 0; font-size: 16px; opacity: 0.6;">ปกติ 2 ที่นั่ง</td>
-            <td style="text-align: right; font-size: 18px; color: rgba(255,255,255,0.35); text-decoration: line-through; font-family: 'Kanit', sans-serif;">92,000 ฿</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 0; font-size: 16px; font-weight: 600;">คืนนี้เท่านั้น</td>
-            <td style="text-align: right; font-size: 24px; font-weight: 700; color: var(--terra); font-family: 'Kanit', sans-serif;">14,990 ฿</td>
-          </tr>
-        </table>
-      </div>
-      <div style="margin-top: 20px; padding: 12px 20px; background: rgba(204,120,92,0.12); border: 1px solid rgba(204,120,92,0.3); border-radius: 8px; text-align: center;">
-        <span style="font-size: 15px; color: var(--terra); font-weight: 600;">⏰ สำหรับคนที่สมัครภายในคืนนี้เท่านั้น</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 28: CTA -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div style="text-align: center; max-width: 800px;">
-    <h2 style="font-size: 50px; font-weight: 700; margin-bottom: 24px;">พร้อมเริ่มแล้ว</h2>
-    <p style="font-size: 22px; margin-bottom: 40px;"><span style="opacity: 0.7;">ทัก </span><span style="color: #CC785C; font-weight: 700;">BOOTCAMP</span><span style="opacity: 0.7;"> มาที่ Line ทันทีหลังจบ Live</span></p>
-    <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
-      <div class="card" style="padding: 20px 32px; text-align: center; min-width: 180px;">
-        <div style="font-size: 13px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">ราคา</div>
-        <div style="font-size: 28px; font-weight: 700; color: var(--terra);">14,990 ฿</div>
-      </div>
-      <div class="card" style="padding: 20px 32px; text-align: center; min-width: 180px;">
-        <div style="font-size: 13px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">ระยะเวลา</div>
-        <div style="font-size: 28px; font-weight: 700;">4 สัปดาห์</div>
-      </div>
-      <div class="card" style="padding: 20px 32px; text-align: center; min-width: 180px;">
-        <div style="font-size: 13px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Guarantee</div>
-        <div style="font-size: 28px; font-weight: 700;">15 วัน</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 29: Q&A -->
-<div class="slide bg-dark">
-  <div class="logo-mark">TINA TAYLOR</div>
-  <div class="content center">
-    <div class="accent-line" style="margin: 0 auto 24px;"></div>
-    <h1 style="font-size: 80px; color: var(--terra); margin-bottom: 16px;">Q&amp;A</h1>
-    <p style="font-size: 22px; opacity: 0.7;">มีคำถามเพิ่มเติม?</p>
-    <p style="font-size: 16px; opacity: 0.4; margin-top: 40px;">หลัง live จบ — แอดมินจะ follow up ทุกคนที่ดูอยู่ค่ะ</p>
-  </div>
-</div>
-
-<!-- Navigation -->
-<div class="nav">
-  <button onclick="prevSlide()">← ก่อนหน้า</button>
-  <button class="primary" onclick="nextSlide()">ถัดไป →</button>
-</div>
-<div class="slide-counter" id="counter">1 / 35</div>
+<div class="footer">สร้างโดย <strong>Tina Taylor</strong> · Claude COWORK Live Session · 28 เมษายน 2568</div>
 
 <script>
-  let current = 0;
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-
-  function showSlide(n) {
-    slides[current].classList.remove('active');
-    current = (n + total) % total;
-    slides[current].classList.add('active');
-    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
-  }
-
-  function nextSlide() { showSlide(current + 1); }
-  function prevSlide() { showSlide(current - 1); }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-      e.preventDefault();
-      nextSlide();
-    }
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      prevSlide();
-    }
+  const sections = ['highlights','machines','prompts','fit','offer'];
+  const tabs = document.querySelectorAll('.nav-tab');
+  window.addEventListener('scroll', () => {
+    let current = 'highlights';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + current));
   });
+
+  function copyPrompt(id, btn) {
+    navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Prompt`;
+      }, 2000);
+    });
+  }
 </script>
 </body>
 </html>
